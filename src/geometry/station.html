@@ -17,7 +17,6 @@
       <script src="../../_static/documentation_options.js?v=01f34227"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -47,21 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="main.html">geometry</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Station</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#mpldts.geometry.station.Station"><code class="docutils literal notranslate"><span class="pre">Station</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.__init__"><code class="docutils literal notranslate"><span class="pre">Station.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station._correct_cords"><code class="docutils literal notranslate"><span class="pre">Station._correct_cords()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.name"><code class="docutils literal notranslate"><span class="pre">Station.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.sector"><code class="docutils literal notranslate"><span class="pre">Station.sector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.set_cell_times"><code class="docutils literal notranslate"><span class="pre">Station.set_cell_times()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.station"><code class="docutils literal notranslate"><span class="pre">Station.station</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.super_layer"><code class="docutils literal notranslate"><span class="pre">Station.super_layer()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.super_layers"><code class="docutils literal notranslate"><span class="pre">Station.super_layers</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.wheel"><code class="docutils literal notranslate"><span class="pre">Station.wheel</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Station</a></li>
 <li class="toctree-l2"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="layer.html">Layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
@@ -98,174 +83,6 @@
              
   <section id="station">
 <h1>Station<a class="headerlink" href="#station" title="Link to this heading"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpldts.geometry.station.</span></span><span class="sig-name descname"><span class="pre">Station</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wheel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/station.html#Station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.station.Station" title="Link to this definition"></a></dt>
-<dd><p>Class representing a CMS Drift Tube Chamber.</p>
-<section id="attributes">
-<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
-<dl class="simple">
-<dt>wheel<span class="classifier">int</span></dt><dd><p>Geometrical position within CMS.</p>
-</dd>
-<dt>sector<span class="classifier">int</span></dt><dd><p>Geometrical position within CMS.</p>
-</dd>
-<dt>station<span class="classifier">int</span></dt><dd><p>Geometrical position within CMS.</p>
-</dd>
-<dt>name<span class="classifier">str</span></dt><dd><p>Name of the station. returns “Wheel {wheel}, Sector {sector}, Station {station}”.</p>
-</dd>
-<dt>super_layers<span class="classifier">list</span></dt><dd><p>List of super layers in the station.</p>
-</dd>
-</dl>
-<p>Others inherit from <code class="docutils literal notranslate"><span class="pre">mpldt.geometry.DTFrame</span></code>… (e.g. id, local_center, global_center, direction, etc.)</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wheel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/station.html#Station.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.station.Station.__init__" title="Link to this definition"></a></dt>
-<dd><p>Constructor of the Station class.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wheel</strong> (<em>int</em>) – Wheel position within CMS.</p></li>
-<li><p><strong>sector</strong> (<em>int</em>) – Sector position within CMS.</p></li>
-<li><p><strong>station</strong> (<em>int</em>) – Station type.</p></li>
-<li><p><strong>dt_info</strong> (<em>dict</em><em>, </em><em>list</em><em>, or </em><em>pandas.DataFrame</em>) – Drift time information for the station. Default is None.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station._correct_cords">
-<span class="sig-name descname"><span class="pre">_correct_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/station.html#Station._correct_cords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.station.Station._correct_cords" title="Link to this definition"></a></dt>
-<dd><p>Correct the coordinates of the station. Bear in mind that the station reference
-frame is rotated pi/2 with respect to the CMS frame along x direction:</p>
-<p>CMS -&gt; x: right, y: up, z: forward, Station -&gt; x: right, y: forward, z: down</p>
-<p>That is, a rotation matrix of -90 degrees around the x-axis.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}R_x(-\pi/2) = \begin{bmatrix} 
-                    1 &amp; 0 &amp; 0 \\
-                    0 &amp; 0 &amp; 1 \\
-                    0 &amp; -1 &amp; 0
-                \end{bmatrix}\end{split}\]</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>float</em>) – x coordinate.</p></li>
-<li><p><strong>y</strong> (<em>float</em>) – y coordinate.</p></li>
-<li><p><strong>z</strong> (<em>float</em>) – z coordinate.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed coordinates.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.name" title="Link to this definition"></a></dt>
-<dd><p>Name of the station.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Name of the station in format “Wheel {wheel}, Sector {sector}, Station {station}”.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.sector">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sector</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.sector" title="Link to this definition"></a></dt>
-<dd><p>Sector position within CMS.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Sector position.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.set_cell_times">
-<span class="sig-name descname"><span class="pre">set_cell_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt_info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/station.html#Station.set_cell_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.station.Station.set_cell_times" title="Link to this definition"></a></dt>
-<dd><p>Set the drift times for the cells in the station.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dt_info</strong> (<em>dict</em><em>, </em><em>list</em><em>, or </em><em>pandas.DataFrame</em>) – Drift time information for the station. Can be a dictionary, a list of dictionaries,
-or a pandas DataFrame containing the drift time information identified by super layer,
-layer, and wire. e.g. [{“sl”: 1, “l”: 1, “w”: 1, “time”: 300}, …]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.station">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">station</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.station" title="Link to this definition"></a></dt>
-<dd><p>Station type.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Station position.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.super_layer">
-<span class="sig-name descname"><span class="pre">super_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">super_layer_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/station.html#Station.super_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.station.Station.super_layer" title="Link to this definition"></a></dt>
-<dd><p>Get a super layer by its number. if the super layer does not exist, it returns None.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>super_layer_number</strong> (<em>int</em>) – Number of the super layer.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Super layer with the specified number.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer" title="mpldts.geometry.super_layer.SuperLayer">SuperLayer</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.super_layers">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">super_layers</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.super_layers" title="Link to this definition"></a></dt>
-<dd><p>Get all the super layers in the station.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of super layers in the station.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.wheel">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wheel</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.wheel" title="Link to this definition"></a></dt>
-<dd><p>Wheel position within CMS.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Wheel position.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-</dd></dl>
-
 <p class="rubric">Example</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">local</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">st</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
