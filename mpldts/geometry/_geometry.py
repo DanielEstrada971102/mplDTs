@@ -90,12 +90,12 @@ class DTGeometry:
 
 # Initialize the DTGeometry object with the path to the XML file
 DTGEOMETRY = DTGeometry(
-    os.path.join(os.path.dirname(__file__), "../utils/templates/DTGeometry.xml")
+    os.path.join(os.path.dirname(__file__), "./DTGeometry.xml")
 )
 
 # Example usage
 if __name__ == "__main__":
-    dt_geometry = DTGeometry(os.path.abspath("../utils/templates/DTGeometry.xml"))
+    dt_geometry = DTGeometry(os.path.abspath("./DTGeometry.xml"))
 
     # Retrieve and print global and local positions, and bounds for specific chambers
     global_pos_1 = dt_geometry.get("GlobalPosition", wh=-2, sec=1, st=1)
