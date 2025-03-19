@@ -47,7 +47,13 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../geometry/main.html">geometry</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="main.html">patches</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">DTPatch</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DTPatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mpldts.patches.dt_patch.DTPatch"><code class="docutils literal notranslate"><span class="pre">DTPatch</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mpldts.patches.dt_patch.DTPatch.__init__"><code class="docutils literal notranslate"><span class="pre">DTPatch.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -213,6 +219,42 @@ to utilize the exact CMS coordinate system to visualize part or the whole DT sys
 </div>
 <a class="image-class reference internal image-reference" href="../../_images/dt_patch_global_color.svg"><img alt="Alternative text" class="image-class align-center" src="../../_images/dt_patch_global_color.svg" style="width: 600px;" />
 </a>
+<dl class="py class">
+<dt class="sig sig-object py" id="mpldts.patches.dt_patch.DTPatch">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpldts.patches.dt_patch.</span></span><span class="sig-name descname"><span class="pre">DTPatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../geometry/station.html#mpldts.geometry.station.Station" title="mpldts.geometry.station.Station"><span class="pre">Station</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faceview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'phi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/patches/dt_patch.html#DTPatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.patches.dt_patch.DTPatch" title="Link to this definition"></a></dt>
+<dd><p>A class to visualize DT Station data.</p>
+<section id="attributes">
+<h2>Attributes:<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>bounds_collections<span class="classifier">PatchCollection</span></dt><dd><p>A collection of patches representing the bounds of the station and its superlayers.</p>
+</dd>
+<dt>cells_collection<span class="classifier">PatchCollection</span></dt><dd><p>A collection of patches representing each DT cell, with optional colormap based on time information.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mpldts.patches.dt_patch.DTPatch.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../geometry/station.html#mpldts.geometry.station.Station" title="mpldts.geometry.station.Station"><span class="pre">Station</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faceview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'phi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/patches/dt_patch.html#DTPatch.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.patches.dt_patch.DTPatch.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize a DTPatch instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>station</strong> (<a class="reference internal" href="../geometry/station.html#mpldts.geometry.station.Station" title="mpldts.geometry.station.Station"><em>Station</em></a>) – The Station object containing the geometry information.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes.Axes</em>) – The matplotlib axes to draw the patches on.</p></li>
+<li><p><strong>local</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to use local or global coordinates.</p></li>
+<li><p><strong>faceview</strong> (<em>str</em><em>, </em><em>optional</em>) – The view type, either “phi” or “eta”.</p></li>
+<li><p><strong>bounds_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments for the bounds PatchCollection.</p></li>
+<li><p><strong>cells_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments for the cells PatchCollection.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None. Adds two collections, one for the bounds and another for each DT cell, to the provided matplotlib axes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
 </section>
 
 
