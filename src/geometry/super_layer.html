@@ -51,10 +51,10 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SuperLayer</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#mpldts.geometry.super_layer.SuperLayer"><code class="docutils literal notranslate"><span class="pre">SuperLayer</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.super_layer.SuperLayer.__init__"><code class="docutils literal notranslate"><span class="pre">SuperLayer.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.super_layer.SuperLayer._correct_cords"><code class="docutils literal notranslate"><span class="pre">SuperLayer._correct_cords()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.super_layer.SuperLayer.layer"><code class="docutils literal notranslate"><span class="pre">SuperLayer.layer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.super_layer.SuperLayer.layers"><code class="docutils literal notranslate"><span class="pre">SuperLayer.layers</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.super_layer.SuperLayer.number"><code class="docutils literal notranslate"><span class="pre">SuperLayer.number</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.super_layer.SuperLayer.transform2CMS"><code class="docutils literal notranslate"><span class="pre">SuperLayer.transform2CMS()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -122,6 +122,60 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="mpldts.geometry.super_layer.SuperLayer._correct_cords">
+<span class="sig-name descname"><span class="pre">_correct_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/super_layer.html#SuperLayer._correct_cords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.super_layer.SuperLayer._correct_cords" title="Link to this definition"></a></dt>
+<dd><p>Correct the coordinates of the super layer. Bear in mind that the reference
+frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:</p>
+<dl>
+<dt>if SL == 1 or 3:</dt><dd><p>CMS -&gt; x: right, y: up, z: forward, SuperLayer -&gt; x: right, y: forward, z: down
+That is, a rotation matrix of -90 degrees around the x-axis.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}R_x(-\pi/2) = \begin{bmatrix} 
+                    1 &amp; 0 &amp; 0 \\
+                    0 &amp; 0 &amp; 1 \\
+                    0 &amp; -1 &amp; 0
+                \end{bmatrix}\end{split}\]</div>
+</dd>
+<dt>if SL == 2:</dt><dd><p>CMS -&gt; x: right, y: up, z: forward, SuperLayer -&gt; x: backward, y: right, z: down</p>
+<p>That is, a rotation matrix of 90 degrees around the z-axis, then a rotation of -90 
+degrees around the x-axis.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}R_x(-\pi/2) R_z(\pi/2) = 
+    \begin{bmatrix} 
+        1 &amp; 0 &amp; 0 \\
+        0 &amp; 0 &amp; 1 \\
+        0 &amp; -1 &amp; 0
+    \end{bmatrix} \cdot
+    \begin{bmatrix} 
+        0 &amp; -1 &amp; 0 \\
+        1 &amp; 0 &amp; 0 \\
+        0 &amp; 0 &amp; 1
+    \end{bmatrix}
+    = \begin{bmatrix} 
+        0 &amp; -1 &amp; 0 \\
+        0 &amp; 0 &amp; 1 \\
+        -1 &amp; 0 &amp; 0
+    \end{bmatrix}\end{split}\]</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x-coordinate.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y-coordinate.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z-coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corrected coordinates (x, y, z).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="mpldts.geometry.super_layer.SuperLayer.layer">
 <span class="sig-name descname"><span class="pre">layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/super_layer.html#SuperLayer.layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.super_layer.SuperLayer.layer" title="Link to this definition"></a></dt>
 <dd><p>Get a layer by its number. If the layer does not exist, it returns None.</p>
@@ -162,59 +216,6 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.geometry.super_layer.SuperLayer.transform2CMS">
-<span class="sig-name descname"><span class="pre">transform2CMS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../_modules/mpldts/geometry/super_layer.html#SuperLayer.transform2CMS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.super_layer.SuperLayer.transform2CMS" title="Link to this definition"></a></dt>
-<dd><p>Correct the coordinates of the super layer to the CMS coordinate system. Bear in mind that the
-reference frame is rotated with respect to the CMS frame depending on the super layer number:</p>
-<p>CMS -&gt; x: right, y: up, z: forward
-if SL == 1 or 3:</p>
-<blockquote>
-<div><p>SuperLayer -&gt; x: right, y: forward, z: down
-That is, a rotation matrix of -90 degrees around the x-axis.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}R_x(-\pi/2) = \begin{bmatrix} 
-                    1 &amp; 0 &amp; 0 \\
-                    0 &amp; 0 &amp; 1 \\
-                    0 &amp; -1 &amp; 0
-                \end{bmatrix}\end{split}\]</div>
-</div></blockquote>
-<dl>
-<dt>if SL == 2:</dt><dd><p>SuperLayer -&gt; x: backward, y: right, z: down</p>
-<p>That is, a rotation matrix of 90 degrees around the z-axis, then a rotation of -90 
-degrees around the x-axis.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}R_x(-\pi/2) R_z(\pi/2) = 
-    \begin{bmatrix} 
-        1 &amp; 0 &amp; 0 \\
-        0 &amp; 0 &amp; 1 \\
-        0 &amp; -1 &amp; 0
-    \end{bmatrix} \cdot
-    \begin{bmatrix} 
-        0 &amp; -1 &amp; 0 \\
-        1 &amp; 0 &amp; 0 \\
-        0 &amp; 0 &amp; 1
-    \end{bmatrix}
-    = \begin{bmatrix} 
-        0 &amp; -1 &amp; 0 \\
-        0 &amp; 0 &amp; 1 \\
-        -1 &amp; 0 &amp; 0
-    \end{bmatrix}\end{split}\]</div>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cords</strong> (<em>tuple</em>) – Coordinates to be transformed.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed coordinates.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>

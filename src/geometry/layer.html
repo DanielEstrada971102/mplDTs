@@ -52,10 +52,10 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Layer</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#mpldts.geometry.layer.Layer"><code class="docutils literal notranslate"><span class="pre">Layer</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.layer.Layer.__init__"><code class="docutils literal notranslate"><span class="pre">Layer.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.layer.Layer._correct_cords"><code class="docutils literal notranslate"><span class="pre">Layer._correct_cords()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.layer.Layer.cell"><code class="docutils literal notranslate"><span class="pre">Layer.cell()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.layer.Layer.cells"><code class="docutils literal notranslate"><span class="pre">Layer.cells</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.layer.Layer.number"><code class="docutils literal notranslate"><span class="pre">Layer.number</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.layer.Layer.transform2CMS"><code class="docutils literal notranslate"><span class="pre">Layer.transform2CMS()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -122,6 +122,60 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="mpldts.geometry.layer.Layer._correct_cords">
+<span class="sig-name descname"><span class="pre">_correct_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/layer.html#Layer._correct_cords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.layer.Layer._correct_cords" title="Link to this definition"></a></dt>
+<dd><p>Correct the coordinates of the super layer. Bear in mind that the station reference
+frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:</p>
+<dl>
+<dt>if SL == 1 or 3:</dt><dd><p>CMS -&gt; x: right, y: up, z: forward, SuperLayer -&gt; x: right, y: forward, z: down
+That is, a rotation matrix of -90 degrees around the x-axis.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}Rx(-\pi/2) = \begin{bmatrix} 
+                    1 &amp; 0 &amp; 0 \\
+                    0 &amp; 0 &amp; 1 \\
+                    0 &amp; -1 &amp; 0
+                \end{bmatrix}\end{split}\]</div>
+</dd>
+<dt>if SL == 2:</dt><dd><p>CMS -&gt; x: right, y: up, z: forward, SuperLayer -&gt; x: backward, y: right, z: down</p>
+<p>That is, a rotation matrix of 90 degrees around the z-axis. then a rotation of -90 
+degrees around the x-axis.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}R_x(-\pi/2) R_z(\pi/2) = 
+    \begin{bmatrix} 
+        1 &amp; 0 &amp; 0 \\
+        0 &amp; 0 &amp; 1 \\
+        0 &amp; -1 &amp; 0
+    \end{bmatrix} \cdot
+    \begin{bmatrix} 
+        0 &amp; -1 &amp; 0 \\
+        1 &amp; 0 &amp; 0 \\
+        0 &amp; 0 &amp; 1
+    \end{bmatrix}
+    = \begin{bmatrix} 
+        0 &amp; -1 &amp; 0 \\
+        0 &amp; 0 &amp; 1 \\
+        -1 &amp; 0 &amp; 0
+    \end{bmatrix}\end{split}\]</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x-coordinate.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y-coordinate.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z-coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corrected coordinates (x, y, z).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="mpldts.geometry.layer.Layer.cell">
 <span class="sig-name descname"><span class="pre">cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/layer.html#Layer.cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.layer.Layer.cell" title="Link to this definition"></a></dt>
 <dd><p>Get a layer cell by its id.</p>
@@ -165,63 +219,6 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.geometry.layer.Layer.transform2CMS">
-<span class="sig-name descname"><span class="pre">transform2CMS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../_modules/mpldts/geometry/layer.html#Layer.transform2CMS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.layer.Layer.transform2CMS" title="Link to this definition"></a></dt>
-<dd><p>Correct the coordinates of the layer to the CMS coordinate system. Bear in mind that the
-reference frame is rotated with respect to the CMS frame depending on the super layer number
-where the layer is located.</p>
-<p>CMS -&gt; x: right, y: up, z: forward
-if parent SL == 1 or 3:</p>
-<blockquote>
-<div><p>Layer -&gt; x: right, y: forward, z: down
-That is, a rotation matrix of -90 degrees around the x-axis.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}R_x(-\pi/2) = \begin{bmatrix} 
-                    1 &amp; 0 &amp; 0 \\
-                    0 &amp; 0 &amp; 1 \\
-                    0 &amp; -1 &amp; 0
-                \end{bmatrix}\end{split}\]</div>
-</div></blockquote>
-<dl>
-<dt>if parent SL == 2:</dt><dd><p>Layer -&gt; x: backward, y: right, z: down</p>
-<p>That is, a rotation matrix of 90 degrees around the z-axis, then a rotation of -90 
-degrees around the x-axis.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}R_x(-\pi/2) R_z(\pi/2) = 
-    \begin{bmatrix} 
-        1 &amp; 0 &amp; 0 \\
-        0 &amp; 0 &amp; 1 \\
-        0 &amp; -1 &amp; 0
-    \end{bmatrix} \cdot
-    \begin{bmatrix} 
-        0 &amp; -1 &amp; 0 \\
-        1 &amp; 0 &amp; 0 \\
-        0 &amp; 0 &amp; 1
-    \end{bmatrix}
-    = \begin{bmatrix} 
-        0 &amp; -1 &amp; 0 \\
-        0 &amp; 0 &amp; 1 \\
-        -1 &amp; 0 &amp; 0
-    \end{bmatrix}\end{split}\]</div>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cords</strong> (<em>tuple</em>) – Coordinates to be transformed.</p></li>
-<li><p><strong>parent_number</strong> (<em>int</em><em>, </em><em>optional</em>) – Parent super layer number. Default is None.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed coordinates.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>

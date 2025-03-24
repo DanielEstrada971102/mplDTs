@@ -86,7 +86,7 @@
 
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTGEOMETRY</span><span class="p">,</span> <span class="n">DTFrame</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">array</span>
+
 
 <div class="viewcode-block" id="DriftCell">
 <a class="viewcode-back" href="../../../src/geometry/drift_cell.html#mpldts.geometry.drift_cell.DriftCell">[docs]</a>
@@ -157,19 +157,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_driftTime</span> <span class="o">=</span> <span class="n">time</span>
 
-<div class="viewcode-block" id="DriftCell.transform2CMS">
-<a class="viewcode-back" href="../../../src/geometry/drift_cell.html#mpldts.geometry.drift_cell.DriftCell.transform2CMS">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">transform2CMS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cords</span> <span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-<span class="w">        </span>
+<div class="viewcode-block" id="DriftCell._correct_cords">
+<a class="viewcode-back" href="../../../src/geometry/drift_cell.html#mpldts.geometry.drift_cell.DriftCell._correct_cords">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_correct_cords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Not correction needed since cords are computes ref to parent layer which already applied the correction</span>
-<span class="sd">        </span>
-<span class="sd">        :param cords: The coordinates to transform.</span>
-<span class="sd">        :type cords: tuple</span>
-<span class="sd">        :return: Corrected coordinates (x, y, z).</span>
+<span class="sd">        Not correction needed since parent layer already applied the correction and set the local and global centers.</span>
 
+<span class="sd">        :param x: x-coordinate.</span>
+<span class="sd">        :type x: float</span>
+<span class="sd">        :param y: y-coordinate.</span>
+<span class="sd">        :type y: float</span>
+<span class="sd">        :param z: z-coordinate.</span>
+<span class="sd">        :type z: float</span>
+<span class="sd">        :return: Corrected coordinates (x, y, z).</span>
+<span class="sd">        :rtype: tuple</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform2</span><span class="p">(</span><span class="n">cords</span><span class="p">)</span> <span class="c1"># default transformation is identity</span></div>
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_compute_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position_type</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">):</span>
@@ -187,19 +190,17 @@
 
             <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;FirstWire_ref_to_chamber&quot;</span> <span class="k">if</span> <span class="n">position_type</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span> <span class="k">else</span> <span class="s2">&quot;FirstWire&quot;</span>
             <span class="n">first_wire_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;.//WirePositions//</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;LastWire_ref_to_chamber&quot;</span> <span class="k">if</span> <span class="n">position_type</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span> <span class="k">else</span> <span class="s2">&quot;LastWire&quot;</span>
+            <span class="n">last_wire_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;.//WirePositions//</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
 
             <span class="n">cell_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_first_cell_id</span>
-            <span class="n">x_cell</span> <span class="o">=</span> <span class="n">first_wire_x</span> <span class="o">+</span> <span class="n">cell_index</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="k">if</span> <span class="n">position_type</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span> <span class="k">else</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">first_wire_x</span><span class="p">)</span> <span class="o">-</span> <span class="n">cell_index</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+            <span class="c1"># x_cell = first_wire_x + cell_index * self._width if position_type == &quot;local&quot; else (x - first_wire_x) - cell_index * self._width</span>
+            <span class="n">x_cell</span> <span class="o">=</span> <span class="n">last_wire_x</span> <span class="o">-</span> <span class="n">cell_index</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="k">if</span> <span class="n">position_type</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span> <span class="k">else</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">last_wire_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">cell_index</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">x_cell</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
 
         <span class="k">return</span> <span class="n">x_cell</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
 
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">dc</span> <span class="o">=</span> <span class="n">DriftCell</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span>
 </pre></div>
 
            </div>

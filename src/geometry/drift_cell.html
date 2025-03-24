@@ -52,8 +52,8 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DriftCell</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#mpldts.geometry.drift_cell.DriftCell"><code class="docutils literal notranslate"><span class="pre">DriftCell</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.drift_cell.DriftCell.__init__"><code class="docutils literal notranslate"><span class="pre">DriftCell.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.drift_cell.DriftCell._correct_cords"><code class="docutils literal notranslate"><span class="pre">DriftCell._correct_cords()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.drift_cell.DriftCell.driftTime"><code class="docutils literal notranslate"><span class="pre">DriftCell.driftTime</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.drift_cell.DriftCell.transform2CMS"><code class="docutils literal notranslate"><span class="pre">DriftCell.transform2CMS()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -119,6 +119,27 @@ Bounds variables (width, height, length) are fixed values: 4.2 cm, 1.3 cm, 235 c
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="mpldts.geometry.drift_cell.DriftCell._correct_cords">
+<span class="sig-name descname"><span class="pre">_correct_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/drift_cell.html#DriftCell._correct_cords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.drift_cell.DriftCell._correct_cords" title="Link to this definition"></a></dt>
+<dd><p>Not correction needed since parent layer already applied the correction and set the local and global centers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x-coordinate.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y-coordinate.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z-coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corrected coordinates (x, y, z).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="mpldts.geometry.drift_cell.DriftCell.driftTime">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">driftTime</span></span><a class="headerlink" href="#mpldts.geometry.drift_cell.DriftCell.driftTime" title="Link to this definition"></a></dt>
@@ -129,20 +150,6 @@ Bounds variables (width, height, length) are fixed values: 4.2 cm, 1.3 cm, 235 c
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.geometry.drift_cell.DriftCell.transform2CMS">
-<span class="sig-name descname"><span class="pre">transform2CMS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../_modules/mpldts/geometry/drift_cell.html#DriftCell.transform2CMS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.drift_cell.DriftCell.transform2CMS" title="Link to this definition"></a></dt>
-<dd><p>Not correction needed since cords are computes ref to parent layer which already applied the correction</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cords</strong> (<em>tuple</em>) – The coordinates to transform.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Corrected coordinates (x, y, z).</p>
 </dd>
 </dl>
 </dd></dl>
