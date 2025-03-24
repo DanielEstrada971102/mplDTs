@@ -1,5 +1,6 @@
 from mpldts.geometry.layer import Layer
 from mpldts.geometry import DTGEOMETRY, DTFrame
+from numpy import array
 
 
 class SuperLayer(DTFrame):
@@ -26,8 +27,8 @@ class SuperLayer(DTFrame):
         :type parent: Station, optional
         """
         self.number = int(DTGEOMETRY.get("superLayerNumber", rawId=rawId))
-        super().__init__(rawId=rawId)
         self.parent = parent
+        super().__init__(rawId=rawId)
         self._layers = []
 
         self._build_super_layer()
@@ -75,13 +76,14 @@ class SuperLayer(DTFrame):
         """
         self.layers.append(layer)
 
-    def _correct_cords(self, x, y, z):
+    def transform2CMS(self, cords : tuple) -> tuple:
         """
-        Correct the coordinates of the super layer. Bear in mind that the reference
-        frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:
+        Correct the coordinates of the super layer to the CMS coordinate system. Bear in mind that the
+        reference frame is rotated with respect to the CMS frame depending on the super layer number:
 
+        CMS -> x: right, y: up, z: forward
         if SL == 1 or 3:
-            CMS -> x: right, y: up, z: forward, SuperLayer -> x: right, y: forward, z: down
+            SuperLayer -> x: right, y: forward, z: down
             That is, a rotation matrix of -90 degrees around the x-axis.
 
             .. math::
@@ -93,7 +95,7 @@ class SuperLayer(DTFrame):
                                 \\end{bmatrix}
 
         if SL == 2:
-            CMS -> x: right, y: up, z: forward, SuperLayer -> x: backward, y: right, z: down
+            SuperLayer -> x: backward, y: right, z: down
         
             That is, a rotation matrix of 90 degrees around the z-axis, then a rotation of -90 
             degrees around the x-axis.
@@ -117,19 +119,29 @@ class SuperLayer(DTFrame):
                         -1 & 0 & 0
                     \\end{bmatrix}
 
-        :param x: x-coordinate.
-        :type x: float
-        :param y: y-coordinate.
-        :type y: float
-        :param z: z-coordinate.
-        :type z: float
-        :return: Corrected coordinates (x, y, z).
+        :param cords: Coordinates to be transformed.
+        :type cords: tuple
+        :return: Transformed coordinates.
         :rtype: tuple
         """
+
         if self.number == 1 or self.number == 3:
-            return x, z, -1 * y
+            matrix = array(
+                [
+                    [1, 0, 0],
+                    [0, 0, 1],
+                    [0, -1, 0]
+                ]
+            )
         else:
-            return -1 * y, z, -1 * x
+            matrix = array(
+                [
+                    [0, -1, 0],
+                    [0, 0, 1],
+                    [-1, 0, 0]
+                ]
+            )
+        return self.transform2(cords, matrix)
 
     def _build_super_layer(self):
         """
@@ -142,4 +154,6 @@ class SuperLayer(DTFrame):
 # Example usage
 if __name__ == "__main__":
     super_layer = SuperLayer(rawId=589357056)
-    print(super_layer.number)
+    print(super_layer)
+    for layer in super_layer.layers:
+        print(layer)

@@ -1,6 +1,6 @@
 from mpldts.geometry.drift_cell import DriftCell
 from mpldts.geometry import DTGEOMETRY, DTFrame
-
+from numpy import array
 
 class Layer(DTFrame):
     """
@@ -26,8 +26,8 @@ class Layer(DTFrame):
         :type parent: Station, optional
         """
         self.number = int(DTGEOMETRY.get("layerNumber", rawId=rawId))
-        super().__init__(rawId=rawId)
         self.parent = parent
+        super().__init__(rawId=rawId)
         self._DriftCells = []
 
         self._first_cell_id = int(DTGEOMETRY.get(".//Channels//first", rawId=rawId))
@@ -83,27 +83,29 @@ class Layer(DTFrame):
         """
         self.cells.append(cell)
 
-    def _correct_cords(self, x, y, z):
+    def transform2CMS(self, cords : tuple, parent_number=None) -> tuple:
         """
-        Correct the coordinates of the super layer. Bear in mind that the station reference
-        frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:
+        Correct the coordinates of the layer to the CMS coordinate system. Bear in mind that the
+        reference frame is rotated with respect to the CMS frame depending on the super layer number
+        where the layer is located.
 
-        if SL == 1 or 3:
-            CMS -> x: right, y: up, z: forward, SuperLayer -> x: right, y: forward, z: down
+        CMS -> x: right, y: up, z: forward
+        if parent SL == 1 or 3:
+            Layer -> x: right, y: forward, z: down
             That is, a rotation matrix of -90 degrees around the x-axis.
 
             .. math::
-                
-                Rx(-\\pi/2) = \\begin{bmatrix} 
+
+                R_x(-\\pi/2) = \\begin{bmatrix} 
                                     1 & 0 & 0 \\\\
                                     0 & 0 & 1 \\\\
                                     0 & -1 & 0
                                 \\end{bmatrix}
 
-        if SL == 2:
-            CMS -> x: right, y: up, z: forward, SuperLayer -> x: backward, y: right, z: down
+        if parent SL == 2:
+            Layer -> x: backward, y: right, z: down
         
-            That is, a rotation matrix of 90 degrees around the z-axis. then a rotation of -90 
+            That is, a rotation matrix of 90 degrees around the z-axis, then a rotation of -90 
             degrees around the x-axis.
 
             .. math::
@@ -125,19 +127,38 @@ class Layer(DTFrame):
                         -1 & 0 & 0
                     \\end{bmatrix}
 
-        :param x: x-coordinate.
-        :type x: float
-        :param y: y-coordinate.
-        :type y: float
-        :param z: z-coordinate.
-        :type z: float
-        :return: Corrected coordinates (x, y, z).
+        :param cords: Coordinates to be transformed.
+        :type cords: tuple
+        :param parent_number: Parent super layer number. Default is None.
+        :type parent_number: int, optional
+        :return: Transformed coordinates.
         :rtype: tuple
         """
-        if self.number == 1 or self.number == 3:
-            return x, z, -1 * y
+
+        if not self.parent:
+            if not parent_number:
+                raise ValueError("Parent super layer number must be provided")
+            parent_number = parent_number
         else:
-            return -1 * y, z, -1 * x
+            parent_number = self.parent.number
+
+        if parent_number == 1 or parent_number == 3:
+            matrix = array(
+                [
+                    [1, 0, 0],
+                    [0, 0, 1],
+                    [0, -1, 0]
+                ]
+            )
+        else:
+            matrix = array(
+                [
+                    [0, -1, 0],
+                    [0, 0, 1],
+                    [-1, 0, 0]
+                ]
+            )
+        return self.transform2(cords, matrix)
 
     def _build_layer(self):
         """
@@ -151,4 +172,8 @@ class Layer(DTFrame):
 
 if __name__ == "__main__":
     layer = Layer(589603840)
-    print(layer.cells)
+    print(layer)
+    for cell in layer.cells:
+        print(cell)
+        if cell.number > 5:
+            break

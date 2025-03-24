@@ -1,4 +1,5 @@
 from mpldts.geometry._geometry import DTGEOMETRY
+from numpy import array, identity
 
 class DTFrame(object):
     """
@@ -6,11 +7,12 @@ class DTFrame(object):
     This class is designed to manage common attributes, getters, setters, etc.
     """
 
-    def __init__(self, rawId=None):
+    def __init__(self, rawId= None):
         """
         Initialize the DTFrame object.
 
-        :param rawId: Raw identifier of the DT geometrical object. If not provided, no XML geometrical info will be used to initialize the instance.
+        :param rawId: Raw identifier of the DT geometrical object. If not provided, no XML geometrical \
+            info will be used to initialize the instance.
         :type rawId: int, optional
         """
         if rawId:
@@ -19,6 +21,21 @@ class DTFrame(object):
             self.global_center = DTGEOMETRY.get("GlobalPosition", rawId=rawId)
             self.direction = DTGEOMETRY.get("NormalVector", rawId=rawId)
             self.bounds = DTGEOMETRY.get("Bounds", rawId=rawId)
+
+    def __str__(self):
+        """
+        Provide a string representation of the principal DTFrame object properties.
+
+        :return: String representation of the object.
+        :rtype: str
+        """
+        return (
+            f"id: {self.id} "
+            f"number: {self.number} "
+            f"local_center: {self.local_center}, "
+            f"global_center: {self.global_center}, "
+            f"bounds: {self.bounds}"
+        )
 
     @property
     def id(self):
@@ -101,11 +118,11 @@ class DTFrame(object):
         return self._x_global, self._y_global, self._z_global
 
     @property
-    def local_position_at_min(self):
+    def local_cords_at_min(self):
         """
-        Local position at the minimum coordinates of the Object. It means the lower left corner of the object.
+        Local cords at the minimum coordinates of the Object. It means the lower left corner of the object.
 
-        :return: Local position at minimum coordinates (x, y, z).
+        :return: Local cords at minimum coordinates (x, y, z).
         :rtype: tuple
         """
         x = self._x_local - self.width / 2
@@ -114,11 +131,11 @@ class DTFrame(object):
         return x, y, z
 
     @property
-    def global_position_at_min(self):
+    def global_cords_at_min(self):
         """
-        Global position at the minimum coordinates of the Object. It means the lower left corner of the object.
+        Global cords at the minimum coordinates of the Object. It means the lower left corner of the object.
 
-        :return: Global position at minimum coordinates (x, y, z).
+        :return: Global cords at minimum coordinates (x, y, z).
         :rtype: tuple
         """
         x = self._x_global - self.width / 2
@@ -127,7 +144,7 @@ class DTFrame(object):
         return x, y, z
 
     @id.setter
-    def id(self, id):
+    def id(self, id : int):
         """
         Set the identifier of the Object.
 
@@ -137,7 +154,7 @@ class DTFrame(object):
         self._id = id
 
     @number.setter
-    def number(self, number):
+    def number(self, number : int):
         """
         Set the number of the Object.
 
@@ -147,7 +164,7 @@ class DTFrame(object):
         self._number = number
 
     @bounds.setter
-    def bounds(self, bounds):
+    def bounds(self, bounds : tuple):
         """
         Set the space dimensions of the Object.
 
@@ -157,36 +174,48 @@ class DTFrame(object):
         self._width, self._height, self._length = bounds
 
     @local_center.setter
-    def local_center(self, position):
+    def local_center(self, cords : tuple):
         """
         Set the local center coordinates of the Object.
 
-        :param position: Local center coordinates (x, y, z).
-        :type position: tuple
+        :param cords: Local center coordinates (x, y, z).
+        :type cords: tuple
         """
-        self._x_local, self._y_local, self._z_local = self._correct_cords(*position)
+        self._x_local, self._y_local, self._z_local = self.transform2CMS(cords)
 
     @global_center.setter
-    def global_center(self, position):
+    def global_center(self, cords : tuple):
         """
         Set the global center coordinates of the Object.
 
-        :param position: Global center coordinates (x, y, z).
-        :type position: tuple
+        :param cords: Global center coordinates (x, y, z).
+        :type cords: tuple
         """
-        self._x_global, self._y_global, self._z_global = position
+        self._x_global, self._y_global, self._z_global = cords
 
-    def _correct_cords(self, x, y, z):
+    def transform2(self, cords, matrix=identity(3)) -> tuple:
+        """
+        Transform the coordinates of the object to a new coordinate system.
+        
+        :param cords: The coordinates to transform.
+        :type cords: tuple
+        :param matrix: The transformation matrix.
+        :type matrix: numpy.ndarray. Default, numpy.identity(3)
+        :return: The transformed coordinates.
+        :rtype: tuple
+        """
+        pos_array = array(cords)
+        transformed_cords = matrix @ pos_array
+        return tuple(float(value) for value in transformed_cords)
+
+    def transform2CMS(self, cords: tuple) -> tuple:
         """
         Correct the coordinates to the CMS coordinate system. This method should be implemented by subclasses.
 
-        :param x: The x coordinate.
-        :type x: float
-        :param y: The y coordinate.
-        :type y: float
-        :param z: The z coordinate.
-        :type z: float
+        :param cords: The coordinates to transform.
+        :type cords: tuple
         :return: The corrected coordinates.
         :rtype: tuple
         """
         raise NotImplementedError("Subclasses should implement this method")
+

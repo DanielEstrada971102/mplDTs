@@ -13,7 +13,7 @@
 
 
 from mpldts.geometry import DTGEOMETRY, DTFrame
-
+from numpy import array
 
 class DriftCell(DTFrame):
     """
@@ -79,20 +79,17 @@ class DriftCell(DTFrame):
         """
         self._driftTime = time
 
-    def _correct_cords(self, x, y, z):
+    def transform2CMS(self, cords : tuple) -> tuple:
+        
         """
-        Not correction needed since parent layer already applied the correction and set the local and global centers.
-
-        :param x: x-coordinate.
-        :type x: float
-        :param y: y-coordinate.
-        :type y: float
-        :param z: z-coordinate.
-        :type z: float
+        Not correction needed since cords are computes ref to parent layer which already applied the correction
+        
+        :param cords: The coordinates to transform.
+        :type cords: tuple
         :return: Corrected coordinates (x, y, z).
-        :rtype: tuple
+
         """
-        return x, y, z
+        return self.transform2(cords) # default transformation is identity
 
     def _compute_position(self, position_type="local"):
         """
@@ -116,3 +113,8 @@ class DriftCell(DTFrame):
             x_cell, y, z = 0, 0, 0
 
         return x_cell, y, z
+
+
+if __name__ == "__main__":
+    dc = DriftCell()
+    print(dc)

@@ -1,6 +1,7 @@
 from mpldts.geometry import DTGEOMETRY, DTFrame
 from mpldts.geometry.super_layer import SuperLayer
 from pandas import DataFrame
+from numpy import array
 
 
 class Station(DTFrame):
@@ -170,10 +171,10 @@ class Station(DTFrame):
         """
         self.super_layers.append(super_layer)
 
-    def _correct_cords(self, x, y, z):
+    def transform2CMS(self, cords: tuple) -> tuple:
         """
-        Correct the coordinates of the station. Bear in mind that the station reference
-        frame is rotated pi/2 with respect to the CMS frame along x direction:
+        Transform the coordinates of the station to the CMS coordinate system. Bear in mind that the station
+        reference frame is rotated -pi/2 with respect to the CMS frame along x direction:
 
         CMS -> x: right, y: up, z: forward, Station -> x: right, y: forward, z: down
 
@@ -187,16 +188,19 @@ class Station(DTFrame):
                                 0 & -1 & 0
                             \\end{bmatrix}
 
-        :param x: x coordinate.
-        :type x: float
-        :param y: y coordinate.
-        :type y: float
-        :param z: z coordinate.
-        :type z: float
+        :param cords: Coordinates to be transformed.
+        :type cords: tuple
         :return: Transformed coordinates.
         :rtype: tuple
         """
-        return x, z, -1 * y
+        matrix = array(
+            [
+                [1, 0 , 0 ],
+                [0, 0 , 1],
+                [0, -1, 0]
+            ]
+        )
+        return self.transform2(cords, matrix)
 
     def _build_station(self):
         """
@@ -227,26 +231,9 @@ class Station(DTFrame):
 
 
 if __name__ == "__main__":
-    local = False
-    st = Station(wheel=-2, sector=1, station=4)
-    print("Local: ", local)
-    print("Station center:", st.local_center if local else st.global_center)
-    print("Station direction:", st.direction)
+
+    st = Station(wheel=-2, sector=1, station=1)
+    print("Station", st)
     for sl in st.super_layers:
-        print(
-            f">Super Layer {sl.number} center:",
-            sl.local_center if local else sl.global_center,
-        )
-        for l in sl.layers:
-            print(
-                f"->Layer {l.number} center:",
-                l.local_center if local else l.global_center,
-            )
-            print(
-                f"---First Cell center:",
-                l.cells[0].local_center if local else l.cells[0].global_center,
-            )
-            print(
-                f"---Last Cell center:",
-                l.cells[-1].local_center if local else l.cells[-1].global_center,
-            )
+        if sl.number == 2:
+            print("SL: ", sl)

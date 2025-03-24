@@ -36,7 +36,7 @@ class DTPatch:
         :type axes: matplotlib.axes.Axes
         :param local: Boolean indicating whether to use local or global coordinates.
         :type local: bool, optional
-        :param faceview: The view type, either "phi" or "eta".
+        :param faceview: The view type, either "phi" or "z".
         :type faceview: str, optional
         :param bounds_kwargs: Additional keyword arguments for the bounds PatchCollection.
         :type bounds_kwargs: dict, optional
@@ -96,7 +96,7 @@ class DTPatch:
         for super_layer in self.current_DT.super_layers:
             if self.view == "phi" and super_layer.number == 2:
                 continue  # skip superlayer 2
-            elif self.view == "eta" and super_layer.number != 2:
+            elif self.view == "z" and super_layer.number != 2:
                 continue  # skip superlayer 1 and 3
             for layer in super_layer.layers:
                 for cell in layer.cells:
@@ -124,8 +124,8 @@ class DTPatch:
         """
         if self.view == "phi":
             return self._create_frame_phi(obj, rotation_point, type)
-        elif self.view == "eta":
-            return self._create_frame_eta(obj, type)
+        elif self.view == "z":
+            return self._create_frame_z(obj, type)
         else:
             raise ValueError(f"Unknown view type: {self.view}")
 
@@ -143,10 +143,10 @@ class DTPatch:
         """
         width, height, length = obj.bounds
         if self.local:
-            x_min, y_min, z_min = obj.local_position_at_min
+            x_min, y_min, z_min = obj.local_cords_at_min # put to global frame to easy draw
         else:
-            x_min, y_min, z_min = obj.global_position_at_min
-            x, y, z = obj.global_center
+            x_min, y_min, z_min = obj.global_cords_at_min
+            x, y, _ = obj.global_center
 
         if type == "super_layer" and obj.number == 2:
             width = length
@@ -162,9 +162,9 @@ class DTPatch:
 
         return frame
 
-    def _create_frame_eta(self, obj, type=None):
+    def _create_frame_z(self, obj, type=None):
         """
-        Create a rectangular frame for a given object in the eta view.
+        Create a rectangular frame for a given object in the z view.
 
         :param obj: The object to create the frame (from mpldts.geometry).
         :type obj: Station, SuperLayer, Layer, or Cell
@@ -174,13 +174,29 @@ class DTPatch:
         """
         width, height, length = obj.bounds
         if self.local:
-            x_min, y_min, z_min = obj.local_position_at_min
+            x_min, y_min, z_min = obj.local_cords_at_min
+            if type != "cell" and obj.number != 2:
+                width = length
+                x_min = z_min 
+
         else:
-            x_min, y_min, z_min = obj.global_position_at_min
-            x_min = z_min
-            # y_min = sqrt(y_min ** 2 + x_min ** 2)
-        if type != "cell" and obj.number != 2:
-            width = length
-            x_min = z_min
+            x_min, y_min, z_min = obj.global_cords_at_min
+            x, y, _ = obj.global_center
+            if type == "cell":
+                x, y, _ = obj.parent.global_center
+                x_min = x_min - width/2 - obj.parent.parent.parent.global_center[0] / 2
+
+            r = sqrt(x**2 + y**2)
+            y_min = r - height / 2
+
+            if type == "super_layer" and obj.number == 2:
+                x_min = z_min + length / 2 - width / 2
+
+            if type != "cell" and obj.number != 2:
+                x_min = z_min
+                width = length
+
+
         frame = Rectangle((x_min, y_min), width, height)
+
         return frame
