@@ -50,13 +50,13 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Station</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#mpldts.geometry.station.Station"><code class="docutils literal notranslate"><span class="pre">Station</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.__init__"><code class="docutils literal notranslate"><span class="pre">Station.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station._correct_cords"><code class="docutils literal notranslate"><span class="pre">Station._correct_cords()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.name"><code class="docutils literal notranslate"><span class="pre">Station.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.sector"><code class="docutils literal notranslate"><span class="pre">Station.sector</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.set_cell_times"><code class="docutils literal notranslate"><span class="pre">Station.set_cell_times()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.station"><code class="docutils literal notranslate"><span class="pre">Station.station</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.super_layer"><code class="docutils literal notranslate"><span class="pre">Station.super_layer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.super_layers"><code class="docutils literal notranslate"><span class="pre">Station.super_layers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.transform2CMS"><code class="docutils literal notranslate"><span class="pre">Station.transform2CMS()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.wheel"><code class="docutils literal notranslate"><span class="pre">Station.wheel</span></code></a></li>
 </ul>
 </li>
@@ -129,36 +129,6 @@
 <li><p><strong>station</strong> (<em>int</em>) – Station type.</p></li>
 <li><p><strong>dt_info</strong> (<em>dict</em><em>, </em><em>list</em><em>, or </em><em>pandas.DataFrame</em>) – Drift time information for the station. Default is None.</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station._correct_cords">
-<span class="sig-name descname"><span class="pre">_correct_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/station.html#Station._correct_cords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.station.Station._correct_cords" title="Link to this definition"></a></dt>
-<dd><p>Correct the coordinates of the station. Bear in mind that the station reference
-frame is rotated pi/2 with respect to the CMS frame along x direction:</p>
-<p>CMS -&gt; x: right, y: up, z: forward, Station -&gt; x: right, y: forward, z: down</p>
-<p>That is, a rotation matrix of -90 degrees around the x-axis.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}R_x(-\pi/2) = \begin{bmatrix} 
-                    1 &amp; 0 &amp; 0 \\
-                    0 &amp; 0 &amp; 1 \\
-                    0 &amp; -1 &amp; 0
-                \end{bmatrix}\end{split}\]</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>float</em>) – x coordinate.</p></li>
-<li><p><strong>y</strong> (<em>float</em>) – y coordinate.</p></li>
-<li><p><strong>z</strong> (<em>float</em>) – z coordinate.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed coordinates.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -245,6 +215,32 @@ layer, and wire. e.g. [{“sl”: 1, “l”: 1, “w”: 1, “time”: 300}, �
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpldts.geometry.station.Station.transform2CMS">
+<span class="sig-name descname"><span class="pre">transform2CMS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../_modules/mpldts/geometry/station.html#Station.transform2CMS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.station.Station.transform2CMS" title="Link to this definition"></a></dt>
+<dd><p>Transform the coordinates of the station to the CMS coordinate system. Bear in mind that the station
+reference frame is rotated -pi/2 with respect to the CMS frame along x direction:</p>
+<p>CMS -&gt; x: right, y: up, z: forward, Station -&gt; x: right, y: forward, z: down</p>
+<p>That is, a rotation matrix of -90 degrees around the x-axis.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}R_x(-\pi/2) = \begin{bmatrix} 
+                    1 &amp; 0 &amp; 0 \\
+                    0 &amp; 0 &amp; 1 \\
+                    0 &amp; -1 &amp; 0
+                \end{bmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cords</strong> (<em>tuple</em>) – Coordinates to be transformed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>

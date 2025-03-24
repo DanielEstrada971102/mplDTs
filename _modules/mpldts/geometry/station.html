@@ -74,6 +74,7 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTGEOMETRY</span><span class="p">,</span> <span class="n">DTFrame</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry.super_layer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SuperLayer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataFrame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">array</span>
 
 
 <div class="viewcode-block" id="Station">
@@ -251,12 +252,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">super_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">super_layer</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Station._correct_cords">
-<a class="viewcode-back" href="../../../src/geometry/station.html#mpldts.geometry.station.Station._correct_cords">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_correct_cords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="Station.transform2CMS">
+<a class="viewcode-back" href="../../../src/geometry/station.html#mpldts.geometry.station.Station.transform2CMS">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transform2CMS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cords</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Correct the coordinates of the station. Bear in mind that the station reference</span>
-<span class="sd">        frame is rotated pi/2 with respect to the CMS frame along x direction:</span>
+<span class="sd">        Transform the coordinates of the station to the CMS coordinate system. Bear in mind that the station</span>
+<span class="sd">        reference frame is rotated -pi/2 with respect to the CMS frame along x direction:</span>
 
 <span class="sd">        CMS -&gt; x: right, y: up, z: forward, Station -&gt; x: right, y: forward, z: down</span>
 
@@ -270,16 +271,19 @@
 <span class="sd">                                0 &amp; -1 &amp; 0</span>
 <span class="sd">                            \\end{bmatrix}</span>
 
-<span class="sd">        :param x: x coordinate.</span>
-<span class="sd">        :type x: float</span>
-<span class="sd">        :param y: y coordinate.</span>
-<span class="sd">        :type y: float</span>
-<span class="sd">        :param z: z coordinate.</span>
-<span class="sd">        :type z: float</span>
+<span class="sd">        :param cords: Coordinates to be transformed.</span>
+<span class="sd">        :type cords: tuple</span>
 <span class="sd">        :return: Transformed coordinates.</span>
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">y</span></div>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span> <span class="mi">0</span> <span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform2</span><span class="p">(</span><span class="n">cords</span><span class="p">,</span> <span class="n">matrix</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_station</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -315,29 +319,12 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">local</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">st</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Local: &quot;</span><span class="p">,</span> <span class="n">local</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Station center:&quot;</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">local_center</span> <span class="k">if</span> <span class="n">local</span> <span class="k">else</span> <span class="n">st</span><span class="o">.</span><span class="n">global_center</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Station direction:&quot;</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+
+    <span class="n">st</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Station&quot;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">st</span><span class="o">.</span><span class="n">super_layers</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;&gt;Super Layer </span><span class="si">{</span><span class="n">sl</span><span class="o">.</span><span class="n">number</span><span class="si">}</span><span class="s2"> center:&quot;</span><span class="p">,</span>
-            <span class="n">sl</span><span class="o">.</span><span class="n">local_center</span> <span class="k">if</span> <span class="n">local</span> <span class="k">else</span> <span class="n">sl</span><span class="o">.</span><span class="n">global_center</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">sl</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;-&gt;Layer </span><span class="si">{</span><span class="n">l</span><span class="o">.</span><span class="n">number</span><span class="si">}</span><span class="s2"> center:&quot;</span><span class="p">,</span>
-                <span class="n">l</span><span class="o">.</span><span class="n">local_center</span> <span class="k">if</span> <span class="n">local</span> <span class="k">else</span> <span class="n">l</span><span class="o">.</span><span class="n">global_center</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;---First Cell center:&quot;</span><span class="p">,</span>
-                <span class="n">l</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">local_center</span> <span class="k">if</span> <span class="n">local</span> <span class="k">else</span> <span class="n">l</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">global_center</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;---Last Cell center:&quot;</span><span class="p">,</span>
-                <span class="n">l</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">local_center</span> <span class="k">if</span> <span class="n">local</span> <span class="k">else</span> <span class="n">l</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">global_center</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">sl</span><span class="o">.</span><span class="n">number</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SL: &quot;</span><span class="p">,</span> <span class="n">sl</span><span class="p">)</span>
 </pre></div>
 
            </div>

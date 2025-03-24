@@ -217,28 +217,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 <dd><p>Initialize the DTFrame object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>rawId</strong> (<em>int</em><em>, </em><em>optional</em>) – Raw identifier of the DT geometrical object. If not provided, no XML geometrical info will be used to initialize the instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.geometry.DTFrame._correct_cords">
-<span class="sig-name descname"><span class="pre">_correct_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/dt_frame.html#DTFrame._correct_cords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.DTFrame._correct_cords" title="Link to this definition"></a></dt>
-<dd><p>Correct the coordinates to the CMS coordinate system. This method should be implemented by subclasses.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>float</em>) – The x coordinate.</p></li>
-<li><p><strong>y</strong> (<em>float</em>) – The y coordinate.</p></li>
-<li><p><strong>z</strong> (<em>float</em>) – The z coordinate.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The corrected coordinates.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+<dd class="field-odd"><p><strong>rawId</strong> (<em>int</em><em>, </em><em>optional</em>) – Raw identifier of the DT geometrical object. If not provided, no XML geometrical             info will be used to initialize the instance.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -272,12 +251,12 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.DTFrame.global_position_at_min">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_position_at_min</span></span><a class="headerlink" href="#mpldts.geometry.DTFrame.global_position_at_min" title="Link to this definition"></a></dt>
-<dd><p>Global position at the minimum coordinates of the Object. It means the lower left corner of the object.</p>
+<dt class="sig sig-object py" id="mpldts.geometry.DTFrame.global_cords_at_min">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_cords_at_min</span></span><a class="headerlink" href="#mpldts.geometry.DTFrame.global_cords_at_min" title="Link to this definition"></a></dt>
+<dd><p>Global cords at the minimum coordinates of the Object. It means the lower left corner of the object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Global position at minimum coordinates (x, y, z).</p>
+<dd class="field-odd"><p>Global cords at minimum coordinates (x, y, z).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>
@@ -342,12 +321,12 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.DTFrame.local_position_at_min">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_position_at_min</span></span><a class="headerlink" href="#mpldts.geometry.DTFrame.local_position_at_min" title="Link to this definition"></a></dt>
-<dd><p>Local position at the minimum coordinates of the Object. It means the lower left corner of the object.</p>
+<dt class="sig sig-object py" id="mpldts.geometry.DTFrame.local_cords_at_min">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_cords_at_min</span></span><a class="headerlink" href="#mpldts.geometry.DTFrame.local_cords_at_min" title="Link to this definition"></a></dt>
+<dd><p>Local cords at the minimum coordinates of the Object. It means the lower left corner of the object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Local position at minimum coordinates (x, y, z).</p>
+<dd class="field-odd"><p>Local cords at minimum coordinates (x, y, z).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>
@@ -365,6 +344,43 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpldts.geometry.DTFrame.transform2">
+<span class="sig-name descname"><span class="pre">transform2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([[1.,</span> <span class="pre">0.,</span> <span class="pre">0.],</span> <span class="pre">[0.,</span> <span class="pre">1.,</span> <span class="pre">0.],</span> <span class="pre">[0.,</span> <span class="pre">0.,</span> <span class="pre">1.]])</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../_modules/mpldts/geometry/dt_frame.html#DTFrame.transform2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.DTFrame.transform2" title="Link to this definition"></a></dt>
+<dd><p>Transform the coordinates of the object to a new coordinate system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cords</strong> (<em>tuple</em>) – The coordinates to transform.</p></li>
+<li><p><strong>matrix</strong> (<em>numpy.ndarray. Default</em><em>, </em><em>numpy.identity</em><em>(</em><em>3</em><em>)</em>) – The transformation matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpldts.geometry.DTFrame.transform2CMS">
+<span class="sig-name descname"><span class="pre">transform2CMS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../_modules/mpldts/geometry/dt_frame.html#DTFrame.transform2CMS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.DTFrame.transform2CMS" title="Link to this definition"></a></dt>
+<dd><p>Correct the coordinates to the CMS coordinate system. This method should be implemented by subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cords</strong> (<em>tuple</em>) – The coordinates to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The corrected coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
