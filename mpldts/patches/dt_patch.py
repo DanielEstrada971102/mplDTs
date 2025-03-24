@@ -3,7 +3,8 @@ from matplotlib.collections import PatchCollection
 from mpldts.geometry.station import Station
 from mpldts.geometry.drift_cell import DriftCell
 from math import atan2, degrees, sqrt
-
+from numpy import array
+from matplotlib.transforms import Affine2D
 
 class DTPatch:
     """
@@ -142,11 +143,12 @@ class DTPatch:
         :return: A Rectangle patch representing the frame.
         """
         width, height, length = obj.bounds
+        x, y, z = obj.global_center
         if self.local:
             x_min, y_min, z_min = obj.local_position_at_min
         else:
             x_min, y_min, z_min = obj.global_position_at_min
-            x, y, z = obj.global_center
+            # x, y, z = obj.global_center
 
         if type == "super_layer" and obj.number == 2:
             width = length
@@ -154,10 +156,12 @@ class DTPatch:
 
         frame = Rectangle((x_min, y_min), width, height)
 
+        if self.local:
+            frame.rotation_point = (0,0)
+            frame.set_angle(180)
+
         if not self.local:
-            frame.rotation_point = (
-                (rotation_point[0], rotation_point[1]) if rotation_point else (x, y)
-            )
+            frame.rotation_point = (rotation_point[0], rotation_point[1]) if rotation_point else (x, y)
             frame.set_angle(self.angle)
 
         return frame
@@ -182,5 +186,11 @@ class DTPatch:
         if type != "cell" and obj.number != 2:
             width = length
             x_min = z_min
+
         frame = Rectangle((x_min, y_min), width, height)
+
+        if self.local:
+            frame.rotation_point = (0,0)
+            frame.set_angle(180)
+
         return frame

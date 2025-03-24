@@ -109,9 +109,12 @@ class DriftCell(DTFrame):
 
             tag = "FirstWire_ref_to_chamber" if position_type == "local" else "FirstWire"
             first_wire_x = float(DTGEOMETRY.get(f".//WirePositions//{tag}", rawId=self.parent.id))
+            tag = "LastWire_ref_to_chamber" if position_type == "local" else "LastWire"
+            last_wire_x = float(DTGEOMETRY.get(f".//WirePositions//{tag}", rawId=self.parent.id))
 
             cell_index = self.number - self.parent._first_cell_id
-            x_cell = first_wire_x + cell_index * self._width if position_type == "local" else (x - first_wire_x) - cell_index * self._width
+            # x_cell = first_wire_x + cell_index * self._width if position_type == "local" else (x - first_wire_x) - cell_index * self._width
+            x_cell = last_wire_x - cell_index * self._width if position_type == "local" else (x - last_wire_x) + cell_index * self._width
         else:
             x_cell, y, z = 0, 0, 0
 

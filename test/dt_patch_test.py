@@ -1,6 +1,11 @@
 from mpldts.geometry import Station
 from mpldts.patches import DTPatch
+from matplotlib.colors import Normalize
 import matplotlib.pyplot as plt
+
+cmap = plt.get_cmap('viridis').copy()
+cmap.set_under('none')
+norm = Normalize(vmin=9, vmax=100)
 
 def main_global(faceview="phi"):
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
@@ -9,8 +14,17 @@ def main_global(faceview="phi"):
         for st in range(1, 5):
             if (sc == 13 or sc == 14) and st != 4:
                 continue 
-            station = Station(wheel=-2, sector=sc, station=st)
-            _ = DTPatch(station, axes=ax, faceview=faceview, local=False, bounds_kwargs={"linewidth": 0.1, "facecolor": "none"}, cells_kwargs={"linewidth": 0.05, "facecolor": "none"})
+            station = Station(wheel=-2, sector=sc, station=st, dt_info=[
+                        {"sl": 1, "l": 1, "w": 1, "time": 10},
+                        {"sl": 1, "l": 2, "w": 1, "time": 10},
+                        {"sl": 1, "l": 3, "w": 1, "time": 10},
+                        {"sl": 1, "l": 4, "w": 2, "time": 10},
+                        {"sl": 3, "l": 1, "w": 1, "time": 10},
+                        {"sl": 3, "l": 2, "w": 1, "time": 10},
+                        {"sl": 3, "l": 3, "w": 1, "time": 10},
+                        {"sl": 3, "l": 4, "w": 2, "time": 10},
+                    ])
+            _ = DTPatch(station, axes=ax, faceview=faceview, local=False, bounds_kwargs={"linewidth": 0.1, "facecolor": "none"}, cells_kwargs={"linewidth": 0.05, "edgecolor": "k", "cmap": cmap, "norm": norm})
 
     circle = plt.Circle((0, 0), 800, color="gray", alpha=0.05, edgecolor="none")
     ax.add_patch(circle)
@@ -26,8 +40,22 @@ def main_global(faceview="phi"):
 def main_local(faceview="phi"):
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 
-    station = Station(wheel=-2, sector=1, station=1)
-    _ = DTPatch(station, axes=ax, faceview=faceview, local=True)
+    station = Station(wheel=-2, sector=1, station=1,
+                    dt_info=[
+                        {"sl": 1, "l": 1, "w": 1, "time": 10},
+                        {"sl": 1, "l": 2, "w": 1, "time": 10},
+                        {"sl": 1, "l": 3, "w": 1, "time": 10},
+                        {"sl": 1, "l": 4, "w": 2, "time": 10},
+                        {"sl": 2, "l": 1, "w": 1, "time": 10},
+                        {"sl": 2, "l": 2, "w": 1, "time": 10},
+                        {"sl": 2, "l": 3, "w": 1, "time": 10},
+                        {"sl": 2, "l": 4, "w": 2, "time": 10},
+                        {"sl": 3, "l": 1, "w": 1, "time": 10},
+                        {"sl": 3, "l": 2, "w": 1, "time": 10},
+                        {"sl": 3, "l": 3, "w": 1, "time": 10},
+                        {"sl": 3, "l": 4, "w": 2, "time": 10},
+                    ])
+    _ = DTPatch(station, axes=ax, faceview=faceview, local=True, cells_kwargs={"edgecolor": "k", "cmap": cmap, "norm": norm})
 
     width, height, _ = station.bounds
     x, y, _ = station.local_center
