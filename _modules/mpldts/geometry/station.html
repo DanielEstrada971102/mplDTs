@@ -93,10 +93,8 @@
 <span class="sd">            Geometrical position within CMS.</span>
 <span class="sd">        sector : int</span>
 <span class="sd">            Geometrical position within CMS.</span>
-<span class="sd">        station : int</span>
-<span class="sd">            Geometrical position within CMS.</span>
 <span class="sd">        name : str</span>
-<span class="sd">            Name of the station. returns &quot;Wheel {wheel}, Sector {sector}, Station {station}&quot;.</span>
+<span class="sd">            Name of the station. returns &quot;Wheel {wheel}, Sector {sector}, Station {number}&quot;.</span>
 <span class="sd">        super_layers : list</span>
 <span class="sd">            List of super layers in the station.</span>
 
@@ -122,7 +120,7 @@
         <span class="c1"># == Chamber related parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wheel</span> <span class="o">=</span> <span class="n">wheel</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sector</span> <span class="o">=</span> <span class="n">sector</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">station</span> <span class="o">=</span> <span class="n">station</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="n">station</span>
 
         <span class="c1"># == Build the station</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_super_layers</span> <span class="o">=</span> <span class="p">[]</span>
@@ -156,24 +154,14 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sector</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">station</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Station type.</span>
-
-<span class="sd">        :return: Station position.</span>
-<span class="sd">        :rtype: int</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_station</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Name of the station.</span>
 
-<span class="sd">        :return: Name of the station in format &quot;Wheel {wheel}, Sector {sector}, Station {station}&quot;.</span>
+<span class="sd">        :return: Name of the station in format &quot;Wheel {wheel}, Sector {sector}, Station {number}&quot;.</span>
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Wheel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_wheel</span><span class="si">}</span><span class="s2">, Sector </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_sector</span><span class="si">}</span><span class="s2">, Station </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_station</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Wheel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_wheel</span><span class="si">}</span><span class="s2">, Sector </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_sector</span><span class="si">}</span><span class="s2">, Station </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">super_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -228,8 +216,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sector</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="nd">@station</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">station</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="nd">@DTFrame</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the station type.</span>
 
@@ -239,7 +227,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Station value must be between 1 and 4&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_station</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_super_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">super_layer</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

@@ -178,8 +178,13 @@
         <span class="n">axes</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bounds_collection</span><span class="p">)</span>
         <span class="n">axes</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">inversion_factors</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;phi&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+            <span class="s2">&quot;eta&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="p">}</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverted</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">invertStation</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invert_station</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">move_to_global</span><span class="p">()</span></div>
@@ -235,7 +240,7 @@
             <span class="n">width</span> <span class="o">=</span> <span class="n">length</span>
 
         <span class="k">if</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;eta&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">DriftCell</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">number</span> <span class="o">!=</span> <span class="mi">2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;eta&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">DriftCell</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">number</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Station</span><span class="p">))</span>
         <span class="p">):</span>  <span class="c1"># if SL1 or SL3</span>
             <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">z_min</span> <span class="o">=</span> <span class="n">change_frame</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">z_min</span><span class="p">),</span> <span class="n">from_frame</span><span class="o">=</span><span class="s2">&quot;Station&quot;</span><span class="p">,</span> <span class="n">to_frame</span><span class="o">=</span><span class="s2">&quot;SL2&quot;</span>
@@ -278,22 +283,22 @@
 <span class="sd">        Move the collections to the global CMS frame. This method can be called by the user but ensure</span>
 <span class="sd">        that the PatchCollections are not inverted, as this method will invert them to adjust to the global frame.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">base_bounds_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds_collection</span><span class="o">.</span><span class="n">get_transform</span><span class="p">()</span>
         <span class="n">base_cells_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="o">.</span><span class="n">get_transform</span><span class="p">()</span>
         <span class="n">transformation</span> <span class="o">=</span> <span class="n">Affine2D</span><span class="p">()</span>
 
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">global_center</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;phi&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverted</span><span class="p">:</span>
-                <span class="n">transformation</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverted</span><span class="p">:</span>
+            <span class="n">transformation</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">inversion_factors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;phi&quot;</span><span class="p">:</span>
             <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">direction</span>
             <span class="n">angle</span> <span class="o">=</span> <span class="n">degrees</span><span class="p">(</span><span class="n">atan2</span><span class="p">(</span><span class="n">ny</span><span class="p">,</span> <span class="n">nx</span><span class="p">))</span> <span class="o">+</span> <span class="mi">90</span>  <span class="c1"># ang_incline = ang_normal_refx + 90</span>
             <span class="n">transformation</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">rotate_deg_around</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;eta&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverted</span><span class="p">:</span>
-                <span class="n">transformation</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">r</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
             <span class="n">transformation</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 
@@ -301,20 +306,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">transformation</span> <span class="o">+</span> <span class="n">base_cells_transform</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="DTPatch.invertStation">
-<a class="viewcode-back" href="../../../src/patches/dt_patch.html#mpldts.patches.dt_patch.DTPatch.invertStation">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">invertStation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="DTPatch.invert_station">
+<a class="viewcode-back" href="../../../src/patches/dt_patch.html#mpldts.patches.dt_patch.DTPatch.invert_station">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">invert_station</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Invert the station view. If the current view is &quot;phi&quot;, it will invert along the x-axis.</span>
-<span class="sd">        If the current view is &quot;eta&quot;, it will invert along the y-axis and x-axis (DT Chamber local frame axes).</span>
-<span class="sd">        This method will not produce any change if the local attribute is set to False, this is</span>
-<span class="sd">        intrinsic to matplotlib&#39;s Transform class (? -- to check).</span>
+<span class="sd">        Invert the station view. The inversion depends on the current view and the station number:</span>
+
+<span class="sd">        - For the &quot;phi&quot; view, the station is inverted along the x-axis.</span>
+<span class="sd">        - For the &quot;eta&quot; view, the station is inverted along both the x-axis and y-axis </span>
+<span class="sd">        (in the DT Chamber local frame).</span>
+
+<span class="sd">        The station number determines the inversion factors:</span>
+<span class="sd">        - If the station number is even, the inversion factors are reversed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inverted</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverted</span>
         <span class="n">base_bounds_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds_collection</span><span class="o">.</span><span class="n">get_transform</span><span class="p">()</span>
         <span class="n">base_cells_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="o">.</span><span class="n">get_transform</span><span class="p">()</span>
 
-        <span class="n">adjustment</span> <span class="o">=</span> <span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;phi&quot;</span> <span class="k">else</span> <span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">adjustment</span> <span class="o">=</span> <span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">inversion_factors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">bounds_collection</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">adjustment</span> <span class="o">+</span> <span class="n">base_bounds_transform</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">adjustment</span> <span class="o">+</span> <span class="n">base_cells_transform</span><span class="p">)</span></div>

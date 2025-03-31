@@ -55,6 +55,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.super_layers"><code class="docutils literal notranslate"><span class="pre">Station.super_layers</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.super_layer"><code class="docutils literal notranslate"><span class="pre">Station.super_layer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.wheel"><code class="docutils literal notranslate"><span class="pre">Station.wheel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.sector"><code class="docutils literal notranslate"><span class="pre">Station.sector</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.bounds"><code class="docutils literal notranslate"><span class="pre">Station.bounds</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.direction"><code class="docutils literal notranslate"><span class="pre">Station.direction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.global_center"><code class="docutils literal notranslate"><span class="pre">Station.global_center</span></code></a></li>
@@ -66,9 +67,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.local_cords_at_min"><code class="docutils literal notranslate"><span class="pre">Station.local_cords_at_min</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.number"><code class="docutils literal notranslate"><span class="pre">Station.number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.parent"><code class="docutils literal notranslate"><span class="pre">Station.parent</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.sector"><code class="docutils literal notranslate"><span class="pre">Station.sector</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.width"><code class="docutils literal notranslate"><span class="pre">Station.width</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.station"><code class="docutils literal notranslate"><span class="pre">Station.station</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station._build_station"><code class="docutils literal notranslate"><span class="pre">Station._build_station()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.set_cell_attrs"><code class="docutils literal notranslate"><span class="pre">Station.set_cell_attrs()</span></code></a></li>
 </ul>
@@ -126,9 +125,7 @@
 </dd>
 <dt>sector<span class="classifier">int</span></dt><dd><p>Geometrical position within CMS.</p>
 </dd>
-<dt>station<span class="classifier">int</span></dt><dd><p>Geometrical position within CMS.</p>
-</dd>
-<dt>name<span class="classifier">str</span></dt><dd><p>Name of the station. returns “Wheel {wheel}, Sector {sector}, Station {station}”.</p>
+<dt>name<span class="classifier">str</span></dt><dd><p>Name of the station. returns “Wheel {wheel}, Sector {sector}, Station {number}”.</p>
 </dd>
 <dt>super_layers<span class="classifier">list</span></dt><dd><p>List of super layers in the station.</p>
 </dd>
@@ -157,7 +154,7 @@
 <dd><p>Name of the station.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Name of the station in format “Wheel {wheel}, Sector {sector}, Station {station}”.</p>
+<dd class="field-odd"><p>Name of the station in format “Wheel {wheel}, Sector {sector}, Station {number}”.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
@@ -203,6 +200,20 @@
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Wheel position.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mpldts.geometry.station.Station.sector">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sector</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.sector" title="Link to this definition"></a></dt>
+<dd><p>Sector position within CMS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sector position.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
@@ -369,20 +380,6 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.sector">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sector</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.sector" title="Link to this definition"></a></dt>
-<dd><p>Sector position within CMS.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Sector position.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
 <dt class="sig sig-object py" id="mpldts.geometry.station.Station.width">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.width" title="Link to this definition"></a></dt>
 <dd><p>Width of the Object.</p>
@@ -392,20 +389,6 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.station">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">station</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.station" title="Link to this definition"></a></dt>
-<dd><p>Station type.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Station position.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
