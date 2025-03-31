@@ -97,9 +97,9 @@ And also in :math:`\eta` orientation, that means the longitudinal CMS view:
     :width: 800px
     :align: center
 
-As you can notice from the first `example <cms_dt_local_wb>`_, the chamber appears in local frame reference
+As you can notice from the first `example <cms_dt_local_wb>`_, the chamber appears in a local reference frame
 resulting in an unnaturally rotated view. ``DTPatch`` provides a direct way to invert the view
-by calling ``invertStation`` method (or setting the ``invert`` argument ``True`` when instantiate). 
+by calling ``invertStation`` method (or setting the ``invert`` argument ``True`` when instantiating). 
 This simply applies a reflection in the x-axis if the plot is in :math:`\phi` orientation
 or in the x-axis and y-axis if the plot is in :math:`\eta` orientation as shown in the following ilustration.
 
