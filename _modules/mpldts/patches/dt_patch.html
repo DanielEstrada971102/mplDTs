@@ -178,11 +178,6 @@
         <span class="n">axes</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bounds_collection</span><span class="p">)</span>
         <span class="n">axes</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">inversion_factors</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;phi&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-            <span class="s2">&quot;eta&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-        <span class="p">}</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverted</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">invert_station</span><span class="p">()</span>
 
@@ -291,7 +286,7 @@
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">global_center</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverted</span><span class="p">:</span>
-            <span class="n">transformation</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">inversion_factors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">])</span>
+            <span class="n">transformation</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_inversion_factors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;phi&quot;</span><span class="p">:</span>
             <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">direction</span>
@@ -326,11 +321,30 @@
         <span class="n">base_bounds_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds_collection</span><span class="o">.</span><span class="n">get_transform</span><span class="p">()</span>
         <span class="n">base_cells_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="o">.</span><span class="n">get_transform</span><span class="p">()</span>
 
-        <span class="n">adjustment</span> <span class="o">=</span> <span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">inversion_factors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">])</span>
+        <span class="n">adjustment</span> <span class="o">=</span> <span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_inversion_factors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">bounds_collection</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">adjustment</span> <span class="o">+</span> <span class="n">base_bounds_transform</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">adjustment</span> <span class="o">+</span> <span class="n">base_cells_transform</span><span class="p">)</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_inversion_factors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate inversion factors based on the station&#39;s wheel and sector.</span>
+
+<span class="sd">        :param view: The view type, either &quot;phi&quot; or &quot;eta&quot;.</span>
+<span class="sd">        :type view: str</span>
+<span class="sd">        :return: A tuple of inversion factors.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">wheel</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;phi&quot;</span> <span class="k">else</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">wheel</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;phi&quot;</span> <span class="k">else</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># self.station.wheel == 0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">sector</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;phi&quot;</span> <span class="k">else</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">view</span> <span class="o">==</span> <span class="s2">&quot;phi&quot;</span> <span class="k">else</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 
 </pre></div>
 
