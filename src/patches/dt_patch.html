@@ -503,11 +503,12 @@ or the whole DT system.</p>
 </a>
 <p>As you can notice from the first <a class="reference external" href="cms_dt_local_wb">example</a>, the chamber appears in a local reference frame
 resulting in an unnaturally rotated view. <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> provides a direct way to invert the view
-by calling <code class="docutils literal notranslate"><span class="pre">invertStation</span></code> method (or setting the <code class="docutils literal notranslate"><span class="pre">invert</span></code> argument <code class="docutils literal notranslate"><span class="pre">True</span></code> when instantiating).
-This simply applies a reflection in the x-axis if the plot is in <span class="math notranslate nohighlight">\(\phi\)</span> orientation
-or in the x-axis and y-axis if the plot is in <span class="math notranslate nohighlight">\(\eta\)</span> orientation as shown in the following ilustration.</p>
+by calling <code class="docutils literal notranslate"><span class="pre">invert_station</span></code> method (or setting the <code class="docutils literal notranslate"><span class="pre">invert</span></code> argument <code class="docutils literal notranslate"><span class="pre">True</span></code> when instantiating).
+This simply applies reflections to the chamber view according to wheel, station and faceview (<span class="math notranslate nohighlight">\(\phi\)</span> or <span class="math notranslate nohighlight">\(\eta\)</span>)
+and the result is a more natural view of the chamber as illustrated in the figure.</p>
 <a class="image-class reference internal image-reference" href="../../_images/mpldts_view_frames.png"><img alt="Alternative text" class="image-class align-center" src="../../_images/mpldts_view_frames.png" style="width: 800px;" />
 </a>
+<p>The following example shows how to do this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normalize</span>
 <span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Station</span>
