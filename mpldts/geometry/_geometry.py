@@ -47,18 +47,25 @@ class DTGeometry:
         if "l" in kwargs:
             query += f"//Layer"
             query += f"[@layerNumber='{kwargs['l']}']"
+        if "w" in kwargs:
+            query += f"//Wire"
+            query += f"[@wireNumber='{kwargs['w']}']"
 
         if attribute is None:
-            return self.root.find(query)
+            element = self.root.find(query)
+            return element
 
         element = self.root.find(query)
         if element is not None:
             if attribute in ["GlobalPosition", "LocalPosition", "NormalVector"]:
                 x, y, z = self._transform_to_pos(str_pos_tuple=element.find(attribute).text)
                 return x, y, z
-            elif attribute == "Bounds":
+            elif attribute in ["Bounds", "WiresSize"]:
                 width, height, length = element.find(attribute).attrib.values()
                 return (float(width), float(height), float(length))
+            elif attribute == "WiresRange":
+                first, last = element.find(attribute).attrib.values()
+                return (int(first), int(last))
             else:
                 sub_element = element.find(attribute)
                 if sub_element is not None:
@@ -86,29 +93,32 @@ class DTGeometry:
 
 
 # Initialize the DTGeometry object with the path to the XML file
-DTGEOMETRY = DTGeometry(os.path.join(os.path.dirname(__file__), "./DTGeometry.xml"))
+DTGEOMETRY = DTGeometry(os.path.join(os.path.dirname(__file__), "./DTGeometry_v2.xml"))
 
 # Example usage
 if __name__ == "__main__":
-    dt_geometry = DTGeometry(os.path.abspath("./DTGeometry.xml"))
+    dt_geometry = DTGeometry(os.path.abspath("./DTGeometry_v2.xml"))
 
-    # Retrieve and print global and local positions, and bounds for specific chambers
-    global_pos_1 = dt_geometry.get("GlobalPosition", wh=-2, sec=1, st=1)
-    local_pos_1 = dt_geometry.get("GlobalPosition", wh=-1, sec=1, st=4)
-    bounds = dt_geometry.get("Bounds", wh=-1, sec=1, st=4)
-    print(f"Bounds for Wh:-1, Sec:1, St:4: {bounds}")
+    # print(DTGEOMETRY.get(".//Channels", rawId=574923776))
+    print(DTGEOMETRY.get(".//Channels//Bounds", rawId="574923776"))
 
-    print(f"Global position for Wh:-2, Sec:1, St:1: {global_pos_1}")
-    print(f"Local position for Wh:1, Sec:1, St:4: {local_pos_1}")
+    # # Retrieve and print global and local positions, and bounds for specific chambers
+    # global_pos_1 = dt_geometry.get("GlobalPosition", wh=-2, sec=1, st=1)
+    # local_pos_1 = dt_geometry.get("GlobalPosition", wh=-1, sec=1, st=4)
+    # bounds = dt_geometry.get("Bounds", wh=-1, sec=1, st=4)
+    # print(f"Bounds for Wh:-1, Sec:1, St:4: {bounds}")
 
-    # Iterate through all layers in a specific SuperLayer and print their attributes
-    for sl in dt_geometry.root.find(".//SuperLayer[@rawId='574922752']").iter("Layer"):
-        print(sl.attrib)
+    # print(f"Global position for Wh:-2, Sec:1, St:1: {global_pos_1}")
+    # print(f"Local position for Wh:1, Sec:1, St:4: {local_pos_1}")
 
-    # Test retrieving the total number of channels in a specific layer
-    print("TEST cells")
-    print(dt_geometry.root.find(".//Layer[@rawId='579380224']//Channels//total").text)
+    # # Iterate through all layers in a specific SuperLayer and print their attributes
+    # for sl in dt_geometry.root.find(".//SuperLayer[@rawId='574922752']").iter("Layer"):
+    #     print(sl.attrib)
 
-    # Test retrieving attributes of a specific SuperLayer
-    print("TEST super layer")
-    print(dt_geometry.get(rawId=574922752).attrib)
+    # # Test retrieving the total number of channels in a specific layer
+    # print("TEST cells")
+    # print(dt_geometry.root.find(".//Layer[@rawId='579380224']//Channels//total").text)
+
+    # # Test retrieving attributes of a specific SuperLayer
+    # print("TEST super layer")
+    # print(dt_geometry.get(rawId=574922752).attrib)
