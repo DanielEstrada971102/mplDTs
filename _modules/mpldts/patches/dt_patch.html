@@ -298,7 +298,11 @@
             <span class="n">transformation</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">bounds_collection</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">transformation</span> <span class="o">+</span> <span class="n">base_bounds_transform</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">transformation</span> <span class="o">+</span> <span class="n">base_cells_transform</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">transformation</span> <span class="o">+</span> <span class="n">base_cells_transform</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bounds_collection</span><span class="o">.</span><span class="n">get_transform</span><span class="p">()</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cells_collection</span><span class="o">.</span><span class="n">get_transform</span><span class="p">()</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">())</span></div>
+
+
 
 
 

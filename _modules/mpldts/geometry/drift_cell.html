@@ -111,9 +111,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># class variables</span>
-    <span class="n">_height</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.//Topology//cellHeight&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-    <span class="n">_width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.//Topology//cellWidth&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-    <span class="n">_length</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.//Topology//cellLength&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1"># _height = float(DTGEOMETRY.root.find(&quot;.//Topology//cellHeight&quot;).text)</span>
+    <span class="c1"># _width = float(DTGEOMETRY.root.find(&quot;.//Topology//cellWidth&quot;).text)</span>
+    <span class="c1"># _length = float(DTGEOMETRY.root.find(&quot;.//Topology//cellLength&quot;).text)</span>
 
 <div class="viewcode-block" id="DriftCell.__init__">
 <a class="viewcode-back" href="../../../src/geometry/drift_cell.html#mpldts.geometry.drift_cell.DriftCell.__init__">[docs]</a>
@@ -132,52 +132,53 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">number</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="n">number</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">local_center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_position</span><span class="p">()</span></div>
+        <span class="c1"># self.local_center = self._compute_position()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WiresSize&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_center</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LocalPosition&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">number</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_center</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">number</span><span class="p">)</span></div>
+</div>
 
 
     <span class="c1"># == Getters ==</span>
 
-    <span class="nd">@DTFrame</span><span class="o">.</span><span class="n">global_center</span><span class="o">.</span><span class="n">getter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">global_center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Global position of the drift cell.</span>
+    <span class="c1"># @DTFrame.global_center.getter</span>
+    <span class="c1"># def global_center(self):</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     Global position of the drift cell.</span>
 
-<span class="sd">        .. warning::</span>
-<span class="sd">            This property is not implemented yet.</span>
+    <span class="c1">#     .. warning::</span>
+    <span class="c1">#         This property is not implemented yet.</span>
 
-<span class="sd">        :return: Global position of the drift cell.</span>
-<span class="sd">        :rtype: tuple</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="ne">Warning</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Global position is not implemented yet for Drift Cells.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+    <span class="c1">#     :return: Global position of the drift cell.</span>
+    <span class="c1">#     :rtype: tuple</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     Warning.warn(&quot;Global position is not implemented yet for Drift Cells.&quot;)</span>
+    <span class="c1">#     return None</span>
 
     <span class="c1"># == Setters ==</span>
 
-<div class="viewcode-block" id="DriftCell._compute_position">
-<a class="viewcode-back" href="../../../src/geometry/drift_cell.html#mpldts.geometry.drift_cell.DriftCell._compute_position">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the position of the drift cell.</span>
+    <span class="c1"># def _compute_position(self):</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     Compute the position of the drift cell.</span>
 
-<span class="sd">        :return: Position of the drift cell.</span>
-<span class="sd">        :rtype: tuple</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
-            <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">local_center</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">center</span>
+    <span class="c1">#     :return: Position of the drift cell.</span>
+    <span class="c1">#     :rtype: tuple</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     if self.parent:</span>
+    <span class="c1">#         center = self.parent.local_center</span>
+    <span class="c1">#         x, y, z = center</span>
 
-            <span class="n">first_wire_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;.//WirePositions//FirstWire_ref_to_chamber&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-            <span class="p">)</span>
+    <span class="c1">#         first_wire_x = float(</span>
+    <span class="c1">#             DTGEOMETRY.get(f&quot;.//WirePositions//FirstWire_ref_to_chamber&quot;, rawId=self.parent.id)</span>
+    <span class="c1">#         )</span>
 
-            <span class="n">cell_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_first_cell_id</span>
-            <span class="n">x_cell</span> <span class="o">=</span> <span class="n">first_wire_x</span> <span class="o">+</span> <span class="n">cell_index</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">x_cell</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="c1">#         cell_index = self.number - self.parent._first_cell_id</span>
+    <span class="c1">#         x_cell = first_wire_x + cell_index * self._width</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         x_cell, y, z = 0, 0, 0</span>
 
-        <span class="k">return</span> <span class="n">x_cell</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
-</div>
-
+    <span class="c1">#     return x_cell, y, z</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
