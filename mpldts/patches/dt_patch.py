@@ -214,6 +214,10 @@ class DTPatch:
 
         self.bounds_collection.set_transform(transformation + base_bounds_transform)
         self.cells_collection.set_transform(transformation + base_cells_transform)
+        print(self.bounds_collection.get_transform().get_matrix())
+        print(self.cells_collection.get_transform().get_matrix())
+
+
 
 
     def invert_station(self):
