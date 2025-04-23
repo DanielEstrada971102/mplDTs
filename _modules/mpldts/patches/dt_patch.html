@@ -310,14 +310,8 @@
 <a class="viewcode-back" href="../../../src/patches/dt_patch.html#mpldts.patches.dt_patch.DTPatch.invert_station">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">invert_station</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Invert the station view. The inversion depends on the current view and the station number:</span>
-
-<span class="sd">        - For the &quot;phi&quot; view, the station is inverted along the x-axis.</span>
-<span class="sd">        - For the &quot;eta&quot; view, the station is inverted along both the x-axis and y-axis </span>
-<span class="sd">        (in the DT Chamber local frame).</span>
-
-<span class="sd">        The station number determines the inversion factors:</span>
-<span class="sd">        - If the station number is even, the inversion factors are reversed.</span>
+<span class="sd">        Invert the station view. The inversion depends on the current view and the station&#39;s wheel and sector.</span>
+<span class="sd">        Details about DT chamber orientations can be found `here. &lt;https://dt-sx5.web.cern.ch/dt-sx5/run/docs/050912DT_type_naming.pdf&gt;`_</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
             <span class="k">return</span>

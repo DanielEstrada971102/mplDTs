@@ -3,7 +3,7 @@ geometry
 
 This module provides tools to manage geometrical objects in the context of CMS DT detectors.
 
-The CMS DTs geometry information is stored in an XML file (:download:`DTGeometry.xml <../../_static/DTGeometry.xml>`). 
+The CMS DTs geometry information is stored in an XML file (:download:`DTGeometry.xml <../../_static/DTGeometry_v2.xml>`). 
 The ``geometry`` module includes a class to read and manage this file (`DTGeometry`_).
 
 By default, an instance of this class is created when the package is imported, and the geometry information
@@ -51,7 +51,7 @@ The following example shows how to access the CMS DT geometry information.
 .. literalinclude:: ../../../mpldts/geometry/_geometry.py
     :language: python
     :dedent:
-    :lines: 93-114
+    :lines: 100-117
 
 .. rubric:: Output
 

@@ -183,14 +183,8 @@ with the matplotlib <code class="docutils literal notranslate"><span class="pre"
 <dl class="py method">
 <dt class="sig sig-object py" id="mpldts.patches.dt_patch.DTPatch.invert_station">
 <span class="sig-name descname"><span class="pre">invert_station</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/patches/dt_patch.html#DTPatch.invert_station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.patches.dt_patch.DTPatch.invert_station" title="Link to this definition"></a></dt>
-<dd><p>Invert the station view. The inversion depends on the current view and the station number:</p>
-<ul class="simple">
-<li><p>For the “phi” view, the station is inverted along the x-axis.</p></li>
-<li><p>For the “eta” view, the station is inverted along both the x-axis and y-axis</p></li>
-</ul>
-<p>(in the DT Chamber local frame).</p>
-<p>The station number determines the inversion factors:
-- If the station number is even, the inversion factors are reversed.</p>
+<dd><p>Invert the station view. The inversion depends on the current view and the station’s wheel and sector.
+Details about DT chamber orientations can be found <a class="reference external" href="https://dt-sx5.web.cern.ch/dt-sx5/run/docs/050912DT_type_naming.pdf">here.</a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -508,6 +502,8 @@ This simply applies reflections to the chamber view according to wheel, station 
 and the result is a more natural view of the chamber as illustrated in the figure.</p>
 <a class="image-class reference internal image-reference" href="../../_images/mpldts_view_frames.png"><img alt="Alternative text" class="image-class align-center" src="../../_images/mpldts_view_frames.png" style="width: 800px;" />
 </a>
+<p>inversion (1) or (2) will depend on DT chamber’s orientation, that means,
+if detector face is in <span class="math notranslate nohighlight">\(+z\)</span> or <span class="math notranslate nohighlight">\(-z\)</span> direction, detailed information can be found <a class="reference external" href="https://dt-sx5.web.cern.ch/dt-sx5/run/docs/050912DT_type_naming.pdf">here.</a></p>
 <p>The following example shows how to do this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normalize</span>
