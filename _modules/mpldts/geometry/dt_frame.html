@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mpldts.geometry.dt_frame &mdash; mplDTs 1.0.0 documentation</title>
+  <title>mpldts.geometry.dt_frame &mdash; mplDTs 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -74,6 +74,7 @@
              
   <h1>Source code for mpldts.geometry.dt_frame</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry._geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTGEOMETRY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry.transforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_eta</span><span class="p">,</span> <span class="n">compute_theta</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 
@@ -111,6 +112,10 @@
 <span class="sd">            Local coordinates at the minimum position (lower left corner) of the DT geometrical object.</span>
 <span class="sd">        global_cords_at_min : tuple</span>
 <span class="sd">            Global coordinates at the minimum position (lower left corner) of the DT geometrical object (not implemented).</span>
+<span class="sd">        theta : float</span>
+<span class="sd">            Angle in the XY plane of the DT geometrical object.</span>
+<span class="sd">        eta : float</span>
+<span class="sd">            Pseudorapidity of the DT geometrical object.</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">        - This class can be subclassed to create specific types of DT geometrical objects, such as DT cells, Layers, or SuperLayers.</span>
@@ -300,6 +305,26 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Global coordinates at the minimum position is not implemented yet.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">theta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Angle theta of the Object according to the global center coordinates.</span>
+
+<span class="sd">        :return: Angle theta of the object in radians.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">compute_theta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x_global</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_global</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_global</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pseudorapidity of the Object acording to the gloal center coordinates.</span>
+
+<span class="sd">        :return: Pseudorapidity of the object.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">compute_eta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x_global</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_global</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_global</span><span class="p">)</span>
+
     <span class="nd">@parent</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -369,6 +394,7 @@
 <span class="sd">        :type cords: tuple</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_x_global</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_global</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_global</span> <span class="o">=</span> <span class="n">cords</span></div>
+
 
 </pre></div>
 

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DTPatch &mdash; mplDTs 1.0.0 documentation</title>
+  <title>DTPatch &mdash; mplDTs 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -203,7 +203,7 @@ that the PatchCollections are not inverted, as this method will invert them to a
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Station</span>
 <span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTPatch</span>
-<span class="linenos"> 4</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTGeometry</span>
+<span class="linenos"> 4</span>
 <span class="linenos"> 5</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Plot resolution</span>
 <span class="linenos"> 6</span>
 <span class="linenos"> 7</span><span class="c1"># Cell appearance configuration</span>
@@ -246,8 +246,8 @@ that the PatchCollections are not inverted, as this method will invert them to a
 <span class="linenos">44</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;z [cm]&quot;</span><span class="p">)</span>
 <span class="linenos">45</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x [cm]&quot;</span><span class="p">)</span>
 <span class="linenos">46</span>
-<span class="linenos">47</span><span class="n">geometry_v2</span> <span class="o">=</span> <span class="n">DTGeometry</span><span class="p">(</span><span class="s2">&quot;./DTGeometry_v2.xml&quot;</span><span class="p">)</span>
-<span class="linenos">48</span>
+<span class="linenos">47</span><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="linenos">48</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <a class="image-class reference internal image-reference" href="../../_images/cms_dt_local_wb.svg" id="cms-dt-local-wb"><img alt="Alternative text" class="image-class align-center" id="cms-dt-local-wb" src="../../_images/cms_dt_local_wb.svg" style="width: 800px;" />

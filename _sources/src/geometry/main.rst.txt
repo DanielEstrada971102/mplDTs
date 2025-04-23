@@ -33,6 +33,12 @@ geometry information from the XML file because it will be gotten in those frames
     layer
     drift_cell
 
+.. warning::
+    Starting from version 1.1.0, the XML geometry file includes the local and global positions of each Drift Cell. 
+    Consequently, the :doc:`./drift_cell` module was updated to directly read these properties from the file. 
+    While this enhancement simplifies data access, it significantly increases the creation time of a :doc:`./station` 
+    object. To mitigate this, parallelization of the process is strongly recommended.
+
 Classes
 -------
 - :ref:`DTGeometry`

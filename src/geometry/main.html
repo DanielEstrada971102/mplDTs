@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>geometry &mdash; mplDTs 1.0.0 documentation</title>
+  <title>geometry &mdash; mplDTs 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -66,6 +66,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#other-utils">Other utils</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#transforms">Transforms</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.transforms.change_frame"><code class="docutils literal notranslate"><span class="pre">change_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.transforms.compute_eta"><code class="docutils literal notranslate"><span class="pre">compute_eta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.transforms.compute_theta"><code class="docutils literal notranslate"><span class="pre">compute_theta()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -125,6 +127,13 @@ geometry information from the XML file because it will be gotten in those frames
 <li class="toctree-l1"><a class="reference internal" href="layer.html">Layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
 </ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Starting from version 1.1.0, the XML geometry file includes the local and global positions of each Drift Cell.
+Consequently, the <a class="reference internal" href="drift_cell.html"><span class="doc">DriftCell</span></a> module was updated to directly read these properties from the file.
+While this enhancement simplifies data access, it significantly increases the creation time of a <a class="reference internal" href="station.html"><span class="doc">Station</span></a>
+object. To mitigate this, parallelization of the process is strongly recommended.</p>
 </div>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
@@ -254,6 +263,10 @@ other functionalities for DT geometrical objects.</p>
 </dd>
 <dt>global_cords_at_min<span class="classifier">tuple</span></dt><dd><p>Global coordinates at the minimum position (lower left corner) of the DT geometrical object (not implemented).</p>
 </dd>
+<dt>theta<span class="classifier">float</span></dt><dd><p>Angle in the XY plane of the DT geometrical object.</p>
+</dd>
+<dt>eta<span class="classifier">float</span></dt><dd><p>Pseudorapidity of the DT geometrical object.</p>
+</dd>
 </dl>
 </div></blockquote>
 <div class="admonition note">
@@ -344,6 +357,34 @@ other functionalities for DT geometrical objects.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mpldts.geometry.DTFrame.theta">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">theta</span></span><a class="headerlink" href="#mpldts.geometry.DTFrame.theta" title="Link to this definition"></a></dt>
+<dd><p>Angle theta of the Object according to the global center coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Angle theta of the object in radians.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mpldts.geometry.DTFrame.eta">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eta</span></span><a class="headerlink" href="#mpldts.geometry.DTFrame.eta" title="Link to this definition"></a></dt>
+<dd><p>Pseudorapidity of the Object acording to the gloal center coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pseudorapidity of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -478,6 +519,48 @@ other functionalities for DT geometrical objects.</p>
 <p class="admonition-title">Note</p>
 <p>At the moment only the transformation between SL2 and Station and vice versa are implemented.</p>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mpldts.geometry.transforms.compute_eta">
+<span class="sig-prename descclassname"><span class="pre">mpldts.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">compute_eta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/transforms.html#compute_eta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.transforms.compute_eta" title="Link to this definition"></a></dt>
+<dd><p>Compute the pseudorapidity from the x, y, z coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – The x coordinate.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – The y coordinate.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – The z coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The angle eta in radians.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mpldts.geometry.transforms.compute_theta">
+<span class="sig-prename descclassname"><span class="pre">mpldts.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">compute_theta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/transforms.html#compute_theta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.transforms.compute_theta" title="Link to this definition"></a></dt>
+<dd><p>Compute the angle theta from the x, y, z coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – The x coordinate.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – The y coordinate.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – The z coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The angle theta in radians.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
