@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DTPatch &mdash; mplDTs 1.0.0 documentation</title>
+  <title>DTPatch &mdash; mplDTs 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -183,14 +183,8 @@ with the matplotlib <code class="docutils literal notranslate"><span class="pre"
 <dl class="py method">
 <dt class="sig sig-object py" id="mpldts.patches.dt_patch.DTPatch.invert_station">
 <span class="sig-name descname"><span class="pre">invert_station</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/patches/dt_patch.html#DTPatch.invert_station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.patches.dt_patch.DTPatch.invert_station" title="Link to this definition"></a></dt>
-<dd><p>Invert the station view. The inversion depends on the current view and the station number:</p>
-<ul class="simple">
-<li><p>For the “phi” view, the station is inverted along the x-axis.</p></li>
-<li><p>For the “eta” view, the station is inverted along both the x-axis and y-axis</p></li>
-</ul>
-<p>(in the DT Chamber local frame).</p>
-<p>The station number determines the inversion factors:
-- If the station number is even, the inversion factors are reversed.</p>
+<dd><p>Invert the station view. The inversion depends on the current view and the station’s wheel and sector.
+Details about DT chamber orientations can be found <a class="reference external" href="https://dt-sx5.web.cern.ch/dt-sx5/run/docs/050912DT_type_naming.pdf">here.</a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -224,14 +218,14 @@ that the PatchCollections are not inverted, as this method will invert them to a
 <span class="linenos">16</span><span class="n">axs</span> <span class="o">=</span> <span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 <span class="linenos">17</span>
 <span class="linenos">18</span><span class="c1"># Define DT station</span>
-<span class="linenos">19</span><span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos">19</span><span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="linenos">20</span>
 <span class="linenos">21</span><span class="c1"># Create patches for phi-view and eta-view</span>
 <span class="linenos">22</span><span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
-<span class="linenos">23</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span>
+<span class="linenos">23</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span>
 <span class="linenos">24</span><span class="p">)</span>
 <span class="linenos">25</span><span class="n">dt_patch_z</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
-<span class="linenos">26</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span>
+<span class="linenos">26</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span>
 <span class="linenos">27</span><span class="p">)</span>
 <span class="linenos">28</span>
 <span class="linenos">29</span><span class="c1"># Set axis limits for phi-view</span>
@@ -508,6 +502,8 @@ This simply applies reflections to the chamber view according to wheel, station 
 and the result is a more natural view of the chamber as illustrated in the figure.</p>
 <a class="image-class reference internal image-reference" href="../../_images/mpldts_view_frames.png"><img alt="Alternative text" class="image-class align-center" src="../../_images/mpldts_view_frames.png" style="width: 800px;" />
 </a>
+<p>inversion (1) or (2) will depend on DT chamber’s orientation, that means,
+if detector face is in <span class="math notranslate nohighlight">\(+z\)</span> or <span class="math notranslate nohighlight">\(-z\)</span> direction, detailed information can be found <a class="reference external" href="https://dt-sx5.web.cern.ch/dt-sx5/run/docs/050912DT_type_naming.pdf">here.</a></p>
 <p>The following example shows how to do this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normalize</span>
