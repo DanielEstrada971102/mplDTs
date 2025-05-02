@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Station &mdash; mplDTs 1.1.0 documentation</title>
+  <title>Station &mdash; mplDTs 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -58,7 +58,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.sector"><code class="docutils literal notranslate"><span class="pre">Station.sector</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.bounds"><code class="docutils literal notranslate"><span class="pre">Station.bounds</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.direction"><code class="docutils literal notranslate"><span class="pre">Station.direction</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.eta"><code class="docutils literal notranslate"><span class="pre">Station.eta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.global_center"><code class="docutils literal notranslate"><span class="pre">Station.global_center</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.global_cords_at_min"><code class="docutils literal notranslate"><span class="pre">Station.global_cords_at_min</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.height"><code class="docutils literal notranslate"><span class="pre">Station.height</span></code></a></li>
@@ -68,7 +67,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.local_cords_at_min"><code class="docutils literal notranslate"><span class="pre">Station.local_cords_at_min</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.number"><code class="docutils literal notranslate"><span class="pre">Station.number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.parent"><code class="docutils literal notranslate"><span class="pre">Station.parent</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.theta"><code class="docutils literal notranslate"><span class="pre">Station.theta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.width"><code class="docutils literal notranslate"><span class="pre">Station.width</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station._build_station"><code class="docutils literal notranslate"><span class="pre">Station._build_station()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mpldts.geometry.station.Station.set_cell_attrs"><code class="docutils literal notranslate"><span class="pre">Station.set_cell_attrs()</span></code></a></li>
@@ -252,20 +250,6 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.eta">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eta</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.eta" title="Link to this definition"></a></dt>
-<dd><p>Pseudorapidity of the Object acording to the gloal center coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Pseudorapidity of the object.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
 <dt class="sig sig-object py" id="mpldts.geometry.station.Station.global_center">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_center</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.global_center" title="Link to this definition"></a></dt>
 <dd><p>Global center coordinates of the Object.</p>
@@ -391,20 +375,6 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>object</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mpldts.geometry.station.Station.theta">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">theta</span></span><a class="headerlink" href="#mpldts.geometry.station.Station.theta" title="Link to this definition"></a></dt>
-<dd><p>Angle theta of the Object according to the global center coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Angle theta of the object in radians.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
