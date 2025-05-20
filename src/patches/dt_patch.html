@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DTPatch &mdash; mplDTs 1.0.0 documentation</title>
+  <title>DTPatch &mdash; mplDTs 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,13 +50,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../geometry/main.html">geometry</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="main.html">patches</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DTPatch</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#mpldts.patches.dt_patch.DTPatch"><code class="docutils literal notranslate"><span class="pre">DTPatch</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.patches.dt_patch.DTPatch.__init__"><code class="docutils literal notranslate"><span class="pre">DTPatch.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.patches.dt_patch.DTPatch.change_vmap"><code class="docutils literal notranslate"><span class="pre">DTPatch.change_vmap()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.patches.dt_patch.DTPatch.invert_station"><code class="docutils literal notranslate"><span class="pre">DTPatch.invert_station()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mpldts.patches.dt_patch.DTPatch.move_to_global"><code class="docutils literal notranslate"><span class="pre">DTPatch.move_to_global()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
@@ -114,101 +107,12 @@ the cells of <code class="docutils literal notranslate"><span class="pre">SL1</s
 instance stored as the <code class="docutils literal notranslate"><span class="pre">station</span></code> attribute. This allows for the creation of interactive plots
 with the matplotlib <code class="docutils literal notranslate"><span class="pre">pick_event</span></code>.</p>
 </div>
-<dl class="py class">
-<dt class="sig sig-object py" id="mpldts.patches.dt_patch.DTPatch">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpldts.patches.dt_patch.</span></span><span class="sig-name descname"><span class="pre">DTPatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../geometry/station.html#mpldts.geometry.station.Station" title="mpldts.geometry.station.Station"><span class="pre">Station</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faceview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'phi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'time'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/patches/dt_patch.html#DTPatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.patches.dt_patch.DTPatch" title="Link to this definition"></a></dt>
-<dd><p>A class to visualize a 2D representation of a DT Station data in matplotlib context.</p>
-<section id="attributes">
-<h2>Attributes:<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
-<blockquote>
-<div><dl class="simple">
-<dt>bounds_collection<span class="classifier">matplotlib.collections.PatchCollection</span></dt><dd><p>A collection of patches representing the bounds of the station and its superlayers.</p>
-</dd>
-<dt>cells_collection<span class="classifier">matplotlib.collections.PatchCollection</span></dt><dd><p>A collection of patches representing each DT cell, with optional colormap based on time information.</p>
-</dd>
-<dt>station<span class="classifier">Station</span></dt><dd><p>The Station object containing the geometry information.</p>
-</dd>
-<dt>axes<span class="classifier">matplotlib.axes.Axes</span></dt><dd><p>The matplotlib axes to draw the patches on.</p>
-</dd>
-<dt>view<span class="classifier">str</span></dt><dd><p>The view type, either “phi” or “eta”.</p>
-</dd>
-<dt>local<span class="classifier">bool</span></dt><dd><p>Boolean indicating whether to use local or global coordinates.</p>
-</dd>
-<dt>inverted<span class="classifier">bool</span></dt><dd><p>Boolean indicating whether to invert the view. If local is False, this will not have any effect.</p>
-</dd>
-<dt>vmap<span class="classifier">str</span></dt><dd><p>The variable to map to the colormap.</p>
-</dd>
-</dl>
-</div></blockquote>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Be aware that this is not a child class of <code class="docutils literal notranslate"><span class="pre">matplotlib.patches.Patch</span></code>. Instead, it creates a couple of
-<code class="docutils literal notranslate"><span class="pre">matplotlib.collections.PatchCollection</span></code> objects to draw the station bounds and the cells.</p>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.patches.dt_patch.DTPatch.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../geometry/station.html#mpldts.geometry.station.Station" title="mpldts.geometry.station.Station"><span class="pre">Station</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faceview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'phi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'time'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/patches/dt_patch.html#DTPatch.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.patches.dt_patch.DTPatch.__init__" title="Link to this definition"></a></dt>
-<dd><p>Initialize a DTPatch instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>station</strong> (<a class="reference internal" href="../geometry/station.html#mpldts.geometry.station.Station" title="mpldts.geometry.station.Station"><em>Station</em></a>) – The Station object containing the geometry information.</p></li>
-<li><p><strong>axes</strong> (<em>matplotlib.axes.Axes</em>) – The matplotlib axes to draw the patches on.</p></li>
-<li><p><strong>faceview</strong> (<em>str</em><em>, </em><em>optional</em>) – The view type, either “phi” or “eta”.</p></li>
-<li><p><strong>local</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to use local or global coordinates.</p></li>
-<li><p><strong>inverted</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to invert the view. If local is False, this will not have any effect.</p></li>
-<li><p><strong>vmap</strong> (<em>str</em><em>, </em><em>optional</em>) – The variable to map to the colormap.</p></li>
-<li><p><strong>bounds_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments to apply specifically to the bounds PatchCollection.</p></li>
-<li><p><strong>cells_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments to apply specifically to the cells PatchCollection.</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments to apply to both collections.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. Adds two collections, one for the bounds and another for each DT cell, to the provided matplotlib axes.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.patches.dt_patch.DTPatch.change_vmap">
-<span class="sig-name descname"><span class="pre">change_vmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vmap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/patches/dt_patch.html#DTPatch.change_vmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.patches.dt_patch.DTPatch.change_vmap" title="Link to this definition"></a></dt>
-<dd><p>Change the variable to map to the colormap. Drift cells without the attribute will be set to 0.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vmap</strong> (<em>str</em>) – The variable to map to the colormap.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.patches.dt_patch.DTPatch.invert_station">
-<span class="sig-name descname"><span class="pre">invert_station</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/patches/dt_patch.html#DTPatch.invert_station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.patches.dt_patch.DTPatch.invert_station" title="Link to this definition"></a></dt>
-<dd><p>Invert the station view. The inversion depends on the current view and the station number:</p>
-<ul class="simple">
-<li><p>For the “phi” view, the station is inverted along the x-axis.</p></li>
-<li><p>For the “eta” view, the station is inverted along both the x-axis and y-axis</p></li>
-</ul>
-<p>(in the DT Chamber local frame).</p>
-<p>The station number determines the inversion factors:
-- If the station number is even, the inversion factors are reversed.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mpldts.patches.dt_patch.DTPatch.move_to_global">
-<span class="sig-name descname"><span class="pre">move_to_global</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/patches/dt_patch.html#DTPatch.move_to_global"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.patches.dt_patch.DTPatch.move_to_global" title="Link to this definition"></a></dt>
-<dd><p>Move the collections to the global CMS frame. This method can be called by the user but ensure
-that the PatchCollections are not inverted, as this method will invert them to adjust to the global frame.</p>
-</dd></dl>
-
-</section>
-</dd></dl>
-
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>The following example shows how to create <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> objects and plot the cells of a DT chamber in the local view.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Station</span>
-<span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTPatch</span>
+<span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTStationPatch</span>
 <span class="linenos"> 4</span>
 <span class="linenos"> 5</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Plot resolution</span>
 <span class="linenos"> 6</span>
@@ -224,14 +128,14 @@ that the PatchCollections are not inverted, as this method will invert them to a
 <span class="linenos">16</span><span class="n">axs</span> <span class="o">=</span> <span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 <span class="linenos">17</span>
 <span class="linenos">18</span><span class="c1"># Define DT station</span>
-<span class="linenos">19</span><span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos">19</span><span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="linenos">20</span>
 <span class="linenos">21</span><span class="c1"># Create patches for phi-view and eta-view</span>
-<span class="linenos">22</span><span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
-<span class="linenos">23</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span>
+<span class="linenos">22</span><span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span>
+<span class="linenos">23</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span>
 <span class="linenos">24</span><span class="p">)</span>
-<span class="linenos">25</span><span class="n">dt_patch_z</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
-<span class="linenos">26</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span>
+<span class="linenos">25</span><span class="n">dt_patch_z</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span>
+<span class="linenos">26</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span>
 <span class="linenos">27</span><span class="p">)</span>
 <span class="linenos">28</span>
 <span class="linenos">29</span><span class="c1"># Set axis limits for phi-view</span>
@@ -264,7 +168,7 @@ passed to the <code class="docutils literal notranslate"><span class="pre">Stati
 shown in the following example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Station</span>
-<span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTPatch</span>
+<span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTStationPatch</span>
 <span class="hll"><span class="linenos"> 4</span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normalize</span>
 </span><span class="linenos"> 5</span>
 <span class="linenos"> 6</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Plot resolution</span>
@@ -315,11 +219,11 @@ shown in the following example.</p>
 <span class="hll"><span class="linenos">51</span><span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dt_info</span><span class="o">=</span><span class="n">dt_info</span><span class="p">)</span>
 </span><span class="linenos">52</span>
 <span class="linenos">53</span><span class="c1"># Create patches for phi-view and eta-view</span>
-<span class="linenos">54</span><span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
+<span class="linenos">54</span><span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span>
 <span class="linenos">55</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span>
 <span class="hll"><span class="linenos">56</span>    <span class="n">vmap</span><span class="o">=</span><span class="s2">&quot;var1&quot;</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span>
 </span><span class="linenos">57</span><span class="p">)</span>
-<span class="linenos">58</span><span class="n">dt_patch_z</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
+<span class="linenos">58</span><span class="n">dt_patch_z</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span>
 <span class="linenos">59</span>    <span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span>
 <span class="hll"><span class="linenos">60</span>    <span class="n">vmap</span><span class="o">=</span><span class="s2">&quot;var1&quot;</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span>
 </span><span class="linenos">61</span><span class="p">)</span>
@@ -358,7 +262,7 @@ or the whole DT system.</p>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1.inset_locator</span><span class="w"> </span><span class="kn">import</span> <span class="n">zoomed_inset_axes</span>
 <span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1.inset_locator</span><span class="w"> </span><span class="kn">import</span> <span class="n">mark_inset</span>
 <span class="linenos"> 4</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Station</span>
-<span class="linenos"> 5</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTPatch</span>
+<span class="linenos"> 5</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTStationPatch</span>
 <span class="linenos"> 6</span>
 <span class="linenos"> 7</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">800</span>
 <span class="linenos"> 8</span>
@@ -382,7 +286,7 @@ or the whole DT system.</p>
 <span class="linenos">26</span>        <span class="k">if</span> <span class="p">(</span><span class="n">sc</span> <span class="o">==</span> <span class="mi">13</span> <span class="ow">or</span> <span class="n">sc</span> <span class="o">==</span> <span class="mi">14</span><span class="p">)</span> <span class="ow">and</span> <span class="n">st</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
 <span class="linenos">27</span>            <span class="k">continue</span> <span class="c1"># Sector 13 and 14 are only one MB4 station</span>
 <span class="linenos">28</span>        <span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="n">sc</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="n">st</span><span class="p">)</span>
-<span class="linenos">29</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
+<span class="linenos">29</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span>
 <span class="linenos">30</span>            <span class="n">station</span><span class="p">,</span>
 <span class="linenos">31</span>            <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
 <span class="linenos">32</span>            <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span>
@@ -396,7 +300,7 @@ or the whole DT system.</p>
 <span class="linenos">40</span><span class="k">for</span> <span class="n">sc</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">]:</span> <span class="c1"># Only 3 sectors for the zoomed in view</span>
 <span class="linenos">41</span>    <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
 <span class="linenos">42</span>        <span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="n">sc</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="n">st</span><span class="p">)</span>
-<span class="linenos">43</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
+<span class="linenos">43</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span>
 <span class="linenos">44</span>            <span class="n">station</span><span class="p">,</span>
 <span class="linenos">45</span>            <span class="n">axes</span><span class="o">=</span><span class="n">axins</span><span class="p">,</span>
 <span class="linenos">46</span>            <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span>
@@ -433,7 +337,7 @@ or the whole DT system.</p>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1.inset_locator</span><span class="w"> </span><span class="kn">import</span> <span class="n">zoomed_inset_axes</span>
 <span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1.inset_locator</span><span class="w"> </span><span class="kn">import</span> <span class="n">mark_inset</span>
 <span class="linenos"> 4</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Station</span>
-<span class="linenos"> 5</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTPatch</span>
+<span class="linenos"> 5</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTStationPatch</span>
 <span class="linenos"> 6</span>
 <span class="linenos"> 7</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">800</span>
 <span class="linenos"> 8</span>
@@ -455,7 +359,7 @@ or the whole DT system.</p>
 <span class="linenos">24</span><span class="k">for</span> <span class="n">wh</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
 <span class="linenos">25</span>    <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
 <span class="linenos">26</span>        <span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=</span><span class="n">wh</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="n">st</span><span class="p">)</span>
-<span class="linenos">27</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
+<span class="linenos">27</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span>
 <span class="linenos">28</span>            <span class="n">station</span><span class="p">,</span>
 <span class="linenos">29</span>            <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
 <span class="linenos">30</span>            <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span>
@@ -469,7 +373,7 @@ or the whole DT system.</p>
 <span class="linenos">38</span><span class="k">for</span> <span class="n">wh</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
 <span class="linenos">39</span>    <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
 <span class="linenos">40</span>        <span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=</span><span class="n">wh</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="n">st</span><span class="p">)</span>
-<span class="linenos">41</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span>
+<span class="linenos">41</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span>
 <span class="linenos">42</span>            <span class="n">station</span><span class="p">,</span>
 <span class="linenos">43</span>            <span class="n">axes</span><span class="o">=</span><span class="n">axins</span><span class="p">,</span>
 <span class="linenos">44</span>            <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span>
@@ -508,11 +412,13 @@ This simply applies reflections to the chamber view according to wheel, station 
 and the result is a more natural view of the chamber as illustrated in the figure.</p>
 <a class="image-class reference internal image-reference" href="../../_images/mpldts_view_frames.png"><img alt="Alternative text" class="image-class align-center" src="../../_images/mpldts_view_frames.png" style="width: 800px;" />
 </a>
+<p>inversion (1) or (2) will depend on DT chamber’s orientation, that means,
+if detector face is in <span class="math notranslate nohighlight">\(+z\)</span> or <span class="math notranslate nohighlight">\(-z\)</span> direction, detailed information can be found <a class="reference external" href="https://dt-sx5.web.cern.ch/dt-sx5/run/docs/050912DT_type_naming.pdf">here.</a></p>
 <p>The following example shows how to do this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normalize</span>
 <span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Station</span>
-<span class="linenos"> 4</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTPatch</span>
+<span class="linenos"> 4</span><span class="kn">from</span><span class="w"> </span><span class="nn">mpldts.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTStationPatch</span>
 <span class="linenos"> 5</span>
 <span class="linenos"> 6</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="linenos"> 7</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
@@ -553,10 +459,10 @@ and the result is a more natural view of the chamber as illustrated in the figur
 <span class="linenos">42</span>
 <span class="linenos">43</span><span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dt_info</span><span class="o">=</span><span class="n">dt_info</span><span class="p">)</span>
 <span class="linenos">44</span>
-<span class="linenos">45</span><span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
-<span class="linenos">46</span><span class="n">dt_patch_z</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
-<span class="linenos">47</span><span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inverted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
-<span class="linenos">48</span><span class="n">dt_patch_z</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inverted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
+<span class="linenos">45</span><span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
+<span class="linenos">46</span><span class="n">dt_patch_z</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
+<span class="linenos">47</span><span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inverted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
+<span class="linenos">48</span><span class="n">dt_patch_z</span> <span class="o">=</span> <span class="n">DTStationPatch</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inverted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
 <span class="linenos">49</span>
 <span class="linenos">50</span><span class="n">line</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">((</span><span class="mf">.5</span><span class="p">,</span><span class="mf">.5</span><span class="p">),(</span><span class="mf">.1</span><span class="p">,</span><span class="mf">.9</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="linenos">51</span><span class="n">fig</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
