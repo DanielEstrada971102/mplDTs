@@ -88,32 +88,32 @@
   <section id="station">
 <h1>Station<a class="headerlink" href="#station" title="Link to this heading"></a></h1>
 <p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Station&quot;</span><span class="p">,</span> <span class="s2">&quot;StationNvEta&quot;</span><span class="p">,</span> <span class="n">rotation_matrix</span><span class="o">=</span><span class="n">_RStNvPhiSt</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">StNvezSt</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">StNvPhieySt</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">face_orientation</span>
+    <span class="n">StNvPhiexSt</span> <span class="o">=</span> <span class="n">perpendicular_to_vectors</span><span class="p">(</span><span class="n">StNvPhieySt</span><span class="p">,</span> <span class="n">StNvezSt</span><span class="p">)</span>
 
+    <span class="n">_RStNvPhiSt</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">StNvPhiexSt</span><span class="p">,</span> <span class="n">StNvPhieySt</span><span class="p">,</span> <span class="n">StNvezSt</span><span class="p">]</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># rotation matrix from local to global frame</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Station&quot;</span><span class="p">,</span> <span class="s2">&quot;StationNvPhi&quot;</span><span class="p">,</span> <span class="n">rotation_matrix</span><span class="o">=</span><span class="n">_RStNvPhiSt</span><span class="p">)</span>
+
+    <span class="n">StNvEtaexSt</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">face_orientation</span>
+    <span class="n">StNvEtaeySt</span> <span class="o">=</span> <span class="n">perpendicular_to_vectors</span><span class="p">(</span><span class="n">StNvezSt</span><span class="p">,</span> <span class="n">StNvEtaexSt</span><span class="p">)</span>
+
+    <span class="n">_RStNvPhiSt</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">StNvEtaexSt</span><span class="p">,</span> <span class="n">StNvEtaeySt</span><span class="p">,</span> <span class="n">StNvezSt</span><span class="p">]</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># rotation matrix from local to global frame</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Station&quot;</span><span class="p">,</span> <span class="s2">&quot;StationNvEta&quot;</span><span class="p">,</span> <span class="n">rotation_matrix</span><span class="o">=</span><span class="n">_RStNvPhiSt</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">set_cell_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt_info</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Set the attributes for the drift cells in the station.</span>
+    <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Set the attributes for the drift cells in the station.</span>
 
-<span class="sd">    :param dt_info: Drift cell information for the station. Can be a dictionary, a list of dictionaries,</span>
-<span class="sd">            or a pandas DataFrame containing the drift cell attributes, they should be identified by super layer,</span>
-<span class="sd">            layer, and wire. e.g. ``[{&quot;sl&quot;: 1, &quot;l&quot;: 1, &quot;w&quot;: 1, &quot;time&quot;: 300}, ...]``</span>
-<span class="sd">    :type dt_info: dict, list, or pandas.DataFrame</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dt_info</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="p">[</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dt_info</span><span class="p">)]</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dt_info</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">):</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="n">dt_info</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dt_info</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">dt_info</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-            <span class="s2">&quot;The drift time information must be a dictionary, a list of dictionaries, or a pandas DataFrame.&quot;</span>
-        <span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">info_item</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
-        <span class="n">sl</span> <span class="o">=</span> <span class="n">info_item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;sl&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="n">info_item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="s2">    :param dt_info: Drift cell information for the station. Can be a dictionary, a list of dictionaries,</span>
+<span class="s2">            or a pandas DataFrame containing the drift cell attributes, they should be identified by super layer,</span>
+<span class="s2">            layer, and wire. e.g. ``[{&quot;sl&quot;: 1, &quot;l&quot;: 1, &quot;w&quot;: 1, &quot;time&quot;: 300}, ...]``</span>
 </pre></div>
 </div>
 <p class="rubric">Output</p>
