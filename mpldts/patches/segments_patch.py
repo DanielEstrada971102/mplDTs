@@ -69,8 +69,8 @@ class DTSegmentsPatch:
         self.local = local
         self.vmap = vmap
         self.inverted = (
-inverted if inverted and local else False
-)  # if global required (local = False), no inversion needed
+            inverted if inverted and local else False
+        )  # if global required (local = False), no inversion needed
 
         self.segments_collection = LineCollection(
             [], **(segs_kwargs or {"linewidth": 0.8, "color": "k"}), **kwargs

@@ -1,4 +1,6 @@
 from mpldts.geometry.dt_frame import DTFrame
+from mpldts.geometry.super_layer import SuperLayer
+from mpldts.geometry.station import Station
 import warnings
 
 class DTSegment:
@@ -23,11 +25,12 @@ class DTSegment:
 
     """
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: DTFrame = None):
         """
         Initialize the segment.
         """
-        self.parent = parent
+        if parent is not None:
+            self.parent = parent
 
     def __str__(self):
         """
@@ -51,7 +54,11 @@ class DTSegment:
         :return: Parent container of the segment.
         :rtype: DTFrame (or subclass)
         """
-        return self._parent
+        try:
+            return self._parent
+        except AttributeError:
+            warnings.warn(f"This {self.__class__.__name__} instance does not have a Parent.")
+            return None
 
     @property
     def number(self):
@@ -77,6 +84,12 @@ class DTSegment:
         :return: Local center coordinates (x, y, z).
         :rtype: tuple
         """
+        if self.parent is not None and isinstance(self.parent, SuperLayer):
+            return self.parent.transformer.transform(
+                (self._x_local, self._y_local, self._z_local),
+                from_frame="SuperLayer",
+                to_frame="Station"
+            )
         return self._x_local, self._y_local, self._z_local
 
     @property
@@ -97,7 +110,23 @@ class DTSegment:
         :return: Global center coordinates (x, y, z).
         :rtype: tuple
         """
-        return self._x_global, self._y_global, self._z_global
+        if self.parent is not None:
+            if isinstance(self.parent, SuperLayer):
+                return self.parent.transformer.transform(
+                    (self._x_local, self._y_local, self._z_local),
+                    from_frame="SuperLayer",
+                    to_frame="CMS"
+                )
+            elif isinstance(self.parent, Station):
+                return self.parent.transformer.transform(
+                    (self._x_local, self._y_local, self._z_local),
+                    from_frame="Station",
+                    to_frame="CMS"
+                )
+        warnings.warn(
+            f"This {self.__class__.__name__} instance does not have a Global Center assigned."
+        )
+        return None, None, None
 
     def size(self):
         """
@@ -126,7 +155,6 @@ class DTSegment:
         else:
             self._parent = None
             warnings.warn(f"Parent should be a DTFrame object, setting to None.")
-
 
     @number.setter
     def number(self, number: int):
@@ -158,12 +186,3 @@ class DTSegment:
         """
         self._direction = direction
 
-    @global_center.setter
-    def global_center(self, cords: tuple):
-        """
-        Set the global center coordinates of the Object.
-
-        :param cords: Global center coordinates (x, y, z).
-        :type cords: tuple
-        """
-        self._x_global, self._y_global, self._z_global = cords

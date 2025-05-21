@@ -18,21 +18,22 @@ class DTSegments:
             Geometrical position within CMS.
         station : int
             Geometrical position within CMS.
+        superlayer : int
+            Geometrical position within CMS.
+        parent : DTFrame
+            Parent
         segments : list
             List of segments in the collection.
 
     """
 
-    def __init__(self, wheel, sector, station, segs_info=None):
+    def __init__(self, parent: DataFrame=None, segs_info=None):
         """
         Constructor of the Segments class..
         """
         # == parent DT container
-        self.parent = DTFrame(DTGEOMETRY.get("rawId", wh=wheel, sec=sector, st=station))
-        # == Chamber related parameters
-        self.wheel = wheel
-        self.sector = sector
-        self.station = station
+        if parent is not None:
+            self.parent = parent
 
         # == Build the station
         self._segments = []
@@ -71,6 +72,20 @@ class DTSegments:
     # == Getters
 
     @property
+    def parent(self):
+        """
+        Parent container of the segment.
+
+        :return: Parent container of the segment.
+        :rtype: DTFrame (or subclass)
+        """
+        try:
+            return self._parent
+        except AttributeError:
+            warnings.warn(f"This {self.__class__.__name__} instance does not have a Parent.")
+            return None
+
+    @property
     def wheel(self):
         """
         Wheel position within CMS.
@@ -78,7 +93,17 @@ class DTSegments:
         :return: Wheel position.
         :rtype: int
         """
-        return self._wheel
+        try:
+            return self._wheel
+        except AttributeError:
+            if self.parent:
+                try:
+                    return self.parent.wheel
+                except AttributeError:
+                    if self.parent.parent:
+                        return self.parent.parent.wheel
+            warnings.warn(f"This {self.__class__.__name__} instance does not have a Wheel assigned.")
+            return None
 
     @property
     def sector(self):
@@ -88,7 +113,17 @@ class DTSegments:
         :return: Sector position.
         :rtype: int
         """
-        return self._sector
+        try:
+            return self._sector
+        except AttributeError:
+            if self.parent:
+                try:
+                    return self.parent.sector
+                except AttributeError:
+                    if self.parent.parent:
+                        return self.parent.parent.sector
+            warnings.warn(f"This {self.__class__.__name__} instance does not have a Sector assigned.")
+            return None
 
     @property
     def station(self):
@@ -98,7 +133,17 @@ class DTSegments:
         :return: Station position.
         :rtype: int
         """
-        return self._station
+        try:
+            return self._station
+        except AttributeError:
+            if self.parent:
+                try:
+                    return self.parent.station
+                except AttributeError:
+                    if self.parent.parent:
+                        return self.parent.parent.station
+            warnings.warn(f"This {self.__class__.__name__} instance does not have a Station assigned.")
+            return None
 
     @property
     def segments(self):
@@ -111,6 +156,20 @@ class DTSegments:
         return self._segments
 
     # == Setters
+
+    @parent.setter
+    def parent(self, parent: DTFrame):
+        """
+        Set the parent of the Object.
+
+        :param parent: Parent of the Object.
+        :type parent: DTFrame
+        """
+        if isinstance(parent, DTFrame) or issubclass(type(parent), DTFrame):
+            self._parent = parent
+        else:
+            self._parent = None
+            warnings.warn(f"Parent should be a DTFrame object, setting to None.")
 
     @wheel.setter
     def wheel(self, value):
