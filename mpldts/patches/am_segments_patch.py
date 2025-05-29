@@ -1,8 +1,8 @@
 from matplotlib.collections import LineCollection
-from mpldts.geometry import AMDTSegments, Station
+from mpldts.geometry import AMDTSegments
 from mpldts.patches.dt_patch_base import DTRelatedPatch
 
-class AMSingleDTSegmentsPatch(DTRelatedPatch):
+class AMDTSegmentsPatch(DTRelatedPatch):
     """
     A class to visualize a 2D representation of AM Segments of a DT chamber in matplotlib context.
 
@@ -69,11 +69,8 @@ class AMSingleDTSegmentsPatch(DTRelatedPatch):
             [], **(segs_kwargs or {"linewidth": 0.8, "color": "k"}), **kwargs
         )
 
-        _aux_seg = segments[0]
-        _station = _aux_seg.parent if isinstance(_aux_seg.parent, Station) else _aux_seg.parent.parent 
-
         super().__init__(
-            station=_station,
+            station=segments.parent,
             axes=axes,
             faceview=faceview,
             local=local,
@@ -108,13 +105,13 @@ class AMSingleDTSegmentsPatch(DTRelatedPatch):
         direction = seg.direction
         size = 40
 
-        dx = direction[0] * size
-        dz = direction[2] * size
+        dx = direction[0]
+        dz = direction[2]
 
-        x_start = center[0] - dx * 0.5
-        z_start = center[2] - dz * 0.5
-        x_end = center[0] + dx * 0.5
-        z_end = center[2] + dz * 0.5
+        x_start = center[0] - dx * size * 0.5
+        z_start = center[2] - dz * size * 0.5
+        x_end = center[0] + dx * size * 0.5
+        z_end = center[2] + dz * size * 0.5
 
         return [[x_start, z_start], [x_end, z_end]]
 
