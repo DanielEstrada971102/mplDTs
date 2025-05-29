@@ -1,18 +1,17 @@
 from matplotlib.collections import LineCollection
-from matplotlib.transforms import Affine2D
-from mpldts.geometry import DTSegments
-from math import atan2, degrees
+from mpldts.geometry import AMDTSegments, Station
+from mpldts.patches.dt_patch_base import DTRelatedPatch
 
-class DTSegmentsPatch:
+class AMSingleDTSegmentsPatch(DTRelatedPatch):
     """
-    A class to visualize a 2D representation of DT Segments in matplotlib context.
+    A class to visualize a 2D representation of AM Segments of a DT chamber in matplotlib context.
 
     Attributes:
     -----------
         segments_collection : matplotlib.collections.LineCollection
             A collection of line segments representing the segments of the station.
-        segments : DTSegments
-            The segments to be visualized. Can be any DTSegment or its child class, or a list of them.
+        segments : AMDTSegments
+            The segments to be visualized. Can be any AMDTSegment or its child class, or a list of them.
         axes : matplotlib.axes.Axes
             The matplotlib axes to draw the patches on.
         view : str
@@ -32,7 +31,7 @@ class DTSegmentsPatch:
 
     def __init__(
         self,
-        segments: DTSegments,
+        segments: AMDTSegments,
         axes,
         faceview="phi",
         local=True,
@@ -61,29 +60,29 @@ class DTSegmentsPatch:
         :return: None. Adds a collection with the line segments of a DT to the provided matplotlib axes.
         """
         if faceview == "eta":
-            raise ValueError("DTSegmentsPatch only supports 'phi' view at the moment.")
+            raise ValueError("AMDTSegmentsPatch only supports 'phi' view at the moment.")
 
-        self.segments = segments
-        self.axes = axes
-        self.view = faceview
-        self.local = local
         self.vmap = vmap
-        self.inverted = (
-            inverted if inverted and local else False
-        )  # if global required (local = False), no inversion needed
-
+        self.segments = segments
+        
         self.segments_collection = LineCollection(
             [], **(segs_kwargs or {"linewidth": 0.8, "color": "k"}), **kwargs
         )
 
+        _aux_seg = segments[0]
+        _station = _aux_seg.parent if isinstance(_aux_seg.parent, Station) else _aux_seg.parent.parent 
+
+        super().__init__(
+            station=_station,
+            axes=axes,
+            faceview=faceview,
+            local=local,
+            inverted=inverted,
+            collections=[self.segments_collection],
+        )
+
+    def _draw_collections(self):
         self._draw_segments()
-        axes.add_collection(self.segments_collection)
-
-        if self.inverted:
-            self.invert_segments()
-
-        if not self.local:
-            self.move_to_global()
 
     def _draw_segments(self):
         """
@@ -107,15 +106,15 @@ class DTSegmentsPatch:
         """
         center = seg.local_center
         direction = seg.direction
-        size = seg.size()
+        size = 40
 
         dx = direction[0] * size
-        dy = direction[1] * size
+        dz = direction[2] * size
 
         x_start = center[0] - dx * 0.5
-        z_start = center[2] - dy * 0.5
+        z_start = center[2] - dz * 0.5
         x_end = center[0] + dx * 0.5
-        z_end = center[2] + dy * 0.5
+        z_end = center[2] + dz * 0.5
 
         return [[x_start, z_start], [x_end, z_end]]
 
@@ -129,54 +128,3 @@ class DTSegmentsPatch:
         self.vmap = vmap
         vars = [getattr(seg, self.vmap, 0) for seg in self.segments]
         self.segments_collection.set_array(vars)
-
-    def move_to_global(self):
-        """
-        Move the segments to the global CMS frame.
-        """
-        base_transform = self.segments_collection.get_transform()
-        transformation = Affine2D()
-
-        x, y, z = self.segments.parent.global_center
-
-        if not self.inverted:
-            transformation = transformation.scale(*self._calculate_inversion_factors(self.view))
-
-        if self.view == "phi":
-            nx, ny, _ = self.segments.parent.direction
-            angle = degrees(atan2(ny, nx)) + 90
-            transformation = transformation.translate(x, y).rotate_deg_around(x, y, angle)
-
-        self.segments_collection.set_transform(transformation + base_transform)
-
-    def invert_segments(self):
-        """
-        Invert the segments view.
-        """
-        if not self.local:
-            return
-
-        self.inverted = not self.inverted
-        base_transform = self.segments_collection.get_transform()
-
-        adjustment = Affine2D().scale(*self._calculate_inversion_factors(self.view))
-        self.segments_collection.set_transform(adjustment + base_transform)
-
-    def _calculate_inversion_factors(self, view):
-        """
-        Calculate inversion factors based on the wheel and sector.
-
-        :param view: The view type, either "phi" or "eta".
-        :type view: str
-        :return: A tuple of inversion factors.
-        :rtype: tuple
-        """
-        if self.segments.wheel < 0:
-            return (-1, -1) if view == "phi" else (1, -1)
-        elif self.segments.wheel > 0:
-            return  (1, -1) if view == "phi" else (-1, -1)
-        else:  # self.wheel == 0
-            if self.segments.sector in [1, 4, 5, 8, 9, 12, 13]:
-                return (-1, -1) if view == "phi" else (1, -1)
-            else:
-                return (1, -1) if view == "phi" else (-1, -1)

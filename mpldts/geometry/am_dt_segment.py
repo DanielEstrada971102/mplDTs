@@ -1,9 +1,9 @@
 from mpldts.geometry.dt_frame import DTFrame
 from mpldts.geometry.super_layer import SuperLayer
-from mpldts.geometry.station import Station
+from mpldts.geometry.transforms import TransformManager
 import warnings
 
-class DTSegment:
+class AMDTSegment:
     """
     A class representing a segment like object in a DT, which is simply a row that reconstruct the path of a particle traversing the DT.
     This class is designed to manage common attributes, getters, setters, and other functionalities.
@@ -14,8 +14,6 @@ class DTSegment:
             The DT geometrical object parent where the segment lives.
         number : int
             Number identifier of the segment.
-        length : float
-            Length of the row segment.
         local_center : tuple
             Local center coordinates (x, y, z) of the segment.
         global_center : tuple
@@ -84,12 +82,6 @@ class DTSegment:
         :return: Local center coordinates (x, y, z).
         :rtype: tuple
         """
-        if self.parent is not None and isinstance(self.parent, SuperLayer):
-            return self.parent.transformer.transform(
-                (self._x_local, self._y_local, self._z_local),
-                from_frame="SuperLayer",
-                to_frame="Station"
-            )
         return self._x_local, self._y_local, self._z_local
 
     @property
@@ -110,37 +102,7 @@ class DTSegment:
         :return: Global center coordinates (x, y, z).
         :rtype: tuple
         """
-        if self.parent is not None:
-            if isinstance(self.parent, SuperLayer):
-                return self.parent.transformer.transform(
-                    (self._x_local, self._y_local, self._z_local),
-                    from_frame="SuperLayer",
-                    to_frame="CMS"
-                )
-            elif isinstance(self.parent, Station):
-                return self.parent.transformer.transform(
-                    (self._x_local, self._y_local, self._z_local),
-                    from_frame="Station",
-                    to_frame="CMS"
-                )
-        warnings.warn(
-            f"This {self.__class__.__name__} instance does not have a Global Center assigned."
-        )
-        return None, None, None
-
-    def size(self):
-        """
-        Size of the segment.
-
-        :return: Size of the segment, (width, height, length).
-        :rtype: tuple
-        """
-
-        _, _dy, _ = self._direction
-        max_width = 36 if self._parent is None else self._parent.bounds[1]
-        size_phi = (max_width + 5) / abs(_dy) # 5 cm outside the DT
-
-        return size_phi
+        return self._x_global, self._y_global, self._z_global
 
     @parent.setter
     def parent(self, parent: DTFrame):
@@ -176,6 +138,16 @@ class DTSegment:
         """
         self._x_local, self._y_local, self._z_local = cords
 
+    @global_center.setter
+    def global_center(self, cords: tuple):
+        """
+        Set the global center coordinates of the Object.
+
+        :param cords: Global center coordinates (x, y, z).
+        :type cords: tuple
+        """
+        self._x_global, self._y_global, self._z_global = cords
+
     @direction.setter
     def direction(self, direction: tuple):
         """
@@ -186,3 +158,18 @@ class DTSegment:
         """
         self._direction = direction
 
+    def _setup_transformer(self):
+        from numpy import array
+
+        self.transformer = TransformManager("TPsFrame")
+
+        self.transformer.add("Station", "CMS", transformation_matrix=self.parent.transformer.get_transformation("Station", "CMS"))
+
+        sl_1_local_center = self.parent.super_layer(1).local_center[2]
+        sl_3_local_center = self.parent.super_layer(3).local_center[2]
+        mid_SLs_center_z = (sl_1_local_center + sl_3_local_center) / 2
+        cell_48_x = self.parent.super_layer(1).layer(1).cell(48).local_center[0]
+
+        TStSLsC = [cell_48_x, 0, mid_SLs_center_z]  # tranlation vector to move the center of the super layers to the origin in Station frame -> NEED TO FIX Y
+
+        self.transformer.add("TPsFrame", "Station", translation_vector=TStSLsC)

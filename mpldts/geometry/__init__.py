@@ -4,5 +4,5 @@ from mpldts.geometry.station import Station
 from mpldts.geometry.super_layer import SuperLayer
 from mpldts.geometry.layer import Layer
 from mpldts.geometry.drift_cell import DriftCell
-from mpldts.geometry.dt_segment import DTSegment
-from mpldts.geometry.dt_segments import DTSegments
+from mpldts.geometry.am_dt_segment import AMDTSegment
+from mpldts.geometry.am_dt_segments import AMDTSegments
