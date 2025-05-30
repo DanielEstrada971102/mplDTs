@@ -21,18 +21,35 @@ class AMDTSegments:
         The list of segments in this collection.
     """
 
-    def __init__(self, wheel, sector, station, segs_info):
+    def __init__(self, parent=None, wheel=None, sector=None, station=None, segs_info=None):
         """
         Constructor of the Segments class.
 
+        :param wheel: The wheel number of the segments.
+        :type wheel: int, optional
+        :param sector: The sector number of the segments.
+        :type sector: int, optional
+        :param station: The station number of the segments.
+        :type station: int, optional
+        :param parent: The parent station of the segments. If provided, wheel, sector, and station are not required.
+        :type parent: Station, optional
         :param segs_info: Information for the segments. It could be a dictionary, a list of dictionaries,
                 or a pandas DataFrame containing the segments attributes, they should be identified by
                 e.g. ``[{"sl": 1, "angle": 2, "position": 12.2}, ...]``
-        :type dt_info: dict, list of dict, or pandas.DataFrame.
+        :type segs_info: dict, list of dict, or pandas.DataFrame.
         """
         if segs_info is None:
             raise ValueError("The segments information must be provided.")
-        self.parent = Station(wheel=wheel, sector=sector, station=station)  # Parent station of the segments
+
+        if parent is not None:
+            if not isinstance(parent, Station):
+                raise TypeError("Parent must be an instance of Station.")
+            self.parent = parent
+        else:
+            if any(i is None for i in (wheel, sector, station)):
+                raise ValueError("wheel, sector, and station must be provided if parent is not given.")
+            self.parent = Station(wheel=wheel, sector=sector, station=station)
+
         self._update_transformer()  # Add the AM Tps transformation to the parent transformer
         # == Build the segments ==
         self._segments = []
