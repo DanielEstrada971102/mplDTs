@@ -416,7 +416,7 @@
 
 <div class="viewcode-block" id="TransformManager.transform">
 <a class="viewcode-back" href="../../../src/geometry/main.html#mpldts.geometry.transforms.TransformManager.transform">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">from_frame</span><span class="p">,</span> <span class="n">to_frame</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">from_frame</span><span class="p">,</span> <span class="n">to_frame</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;point&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transform a point from the from_frame to the to_frame.</span>
 
@@ -444,10 +444,19 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;P must be a list, tuple, or ndarray.&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">P</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">points</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">vectors_to_points</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">points</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">vector_to_point</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;point&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">P</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">_convert</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">vectors_to_point</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_convert</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">vector_to_point</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;vector&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">P</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">_convert</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">vectors_to_directions</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_convert</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">vector_to_direction</span>
+
+
+        <span class="n">points</span> <span class="o">=</span> <span class="n">_convert</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">points</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span></div>
 </div>
