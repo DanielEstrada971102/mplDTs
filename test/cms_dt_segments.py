@@ -17,15 +17,15 @@ segs_kwargs = {
 }
 
 segments_info = [
-    {"index": 1, "sl": 3, "slope": 0.1, "position": -100, "q": 1},
-    {"index": 2, "sl": 3, "slope": -0.2, "position": -50, "q": 2},
-    {"index": 3, "sl": 3, "slope": 0.05, "position": 0, "q": 3},
-    {"index": 4, "sl": 1, "slope": 0.3, "position": -15, "q": 2},
-    {"index": 5, "sl": 1, "slope": -0.7, "position": -75, "q": 7},
-    {"index": 6, "sl": 1, "slope": 0.8, "position": 2, "q": 8},
-    {"index": 7, "sl": 2, "slope": 0.4, "position": -30, "q": 4},
-    {"index": 8, "sl": 2, "slope": -0.5, "position": 20, "q": 5},
-    {"index": 9, "sl": 2, "slope": 0.6, "position": -10, "q": 6},
+    {"index": 1, "sl": 3, "angle": 1, "position": -100, "q": 1},
+    {"index": 2, "sl": 3, "angle": 0.2, "position": -50, "q": 2},
+    {"index": 3, "sl": 3, "angle": 0.05, "position": 0, "q": 3},
+    {"index": 4, "sl": 1, "angle": 30, "position": -15, "q": 2},
+    {"index": 5, "sl": 1, "angle": -7, "position": -75, "q": 7},
+    {"index": 6, "sl": 1, "angle": 8, "position": 2, "q": 8},
+    {"index": 7, "sl": 2, "angle": 20, "position": -30, "q": 4},
+    {"index": 8, "sl": 2, "angle": -5, "position": 20, "q": 5},
+    {"index": 9, "sl": 2, "angle": 6, "position": -10, "q": 6},
 ]
 
 
@@ -56,15 +56,17 @@ fig.colorbar(segs_patch_phi.segments_collection, cax=cbar_ax, label="Segment Qua
 # Draw the AM Trigger primitves reference frame
 width, height, length = station.bounds
 
-TPsPhi_center = segments.parent.transformer.transform([0,0,0], from_frame="TPsFramePhi", to_frame="Station")
-TPSTheta_center = segments.parent.transformer.transform([0,0,0], from_frame="TPsFrameTheta", to_frame="Station")
-axs[0].vlines(TPsPhi_center[0], - height / 2 , height / 2, color='black', linewidth=1, alpha=0.7, linestyle='dashed')
-axs[0].hlines(TPsPhi_center[2], - width / 2, width / 2, color='black', linewidth=1, alpha=0.7, linestyle='dashed')
-axs[1].vlines(TPSTheta_center[0], - height / 2, height / 2, color='black', linewidth=1, alpha=0.7, linestyle='dashed')
-axs[1].hlines(TPSTheta_center[2], -length/2, length/2, color='black', linewidth=1, alpha=0.7, linestyle='dashed')
+TPsFrame_center = segments.parent.transformer.transform([0,0,0], from_frame="TPsFrame", to_frame="Station")
 
-print("sl1 cell 48 local center:", station.super_layer(1).layer(1).cell(48).local_center)
-print("sl2 cell 48 local center:", station.super_layer(2).layer(1).cell(48).local_center)
+axs[0].vlines(TPsFrame_center[0], - height / 2 , height / 2, color='black', linewidth=1, alpha=0.7, linestyle='dashed')
+axs[0].hlines(TPsFrame_center[2], - width / 2, width / 2, color='black', linewidth=1, alpha=0.7, linestyle='dashed')
+axs[1].vlines(-TPsFrame_center[1], - height / 2, height / 2, color='black', linewidth=1, alpha=0.7, linestyle='dashed')
+axs[1].hlines(TPsFrame_center[2], -length/2, length/2, color='black', linewidth=1, alpha=0.7, linestyle='dashed')
+
+axs[0].vlines(0, - height / 2 , height / 2, color='red', linewidth=1, alpha=0.7, linestyle='dashed')
+axs[0].hlines(0, - width / 2, width / 2, color='red', linewidth=1, alpha=0.7, linestyle='dashed')
+axs[1].vlines(0, - height / 2, height / 2, color='red', linewidth=1, alpha=0.7, linestyle='dashed')
+axs[1].hlines(0, -length/2, length/2, color='red', linewidth=1, alpha=0.7, linestyle='dashed')
 
 for seg in segments:
     print(seg.number, " -> ", seg.local_center)

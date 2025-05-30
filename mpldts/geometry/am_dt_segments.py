@@ -3,7 +3,6 @@ from mpldts.geometry.station import Station
 import numpy as np
 from pandas import DataFrame
 from copy import deepcopy
-from functools import partial
 
 class AMDTSegments:
     """
@@ -28,7 +27,7 @@ class AMDTSegments:
 
         :param segs_info: Information for the segments. It could be a dictionary, a list of dictionaries,
                 or a pandas DataFrame containing the segments attributes, they should be identified by
-                e.g. ``[{"sl": 1, "slope": 2, "position": 12.2}, ...]``
+                e.g. ``[{"sl": 1, "angle": 2, "position": 12.2}, ...]``
         :type dt_info: dict, list of dict, or pandas.DataFrame.
         """
         if segs_info is None:
@@ -96,68 +95,39 @@ class AMDTSegments:
     def _update_transformer(self):
         """
         Add to the parent transformer the transformation to move from the AM Trigger primitives frame
-        to the Station frame.
-        The transformation is defined as follows:
-        - The z coordinate is set to the midpoint of the local centers of super layers 1 and 3.
-        - The x coordinate is set to the local center of cell 48 in super layer 1, layer 1.
-        - The y coordinate is set to the local center of cell 48 in super layer 2, layer 1 if it exists,
-            otherwise it is set to 0.
-        The transformation is added to the parent station's transformer with the name "TPsFramePhi" and "TPsFrameTheta".
+        to the Station frame. The TPs frame is defined as the geometrical center of the super layers 1 and 3.
+        The transformation is added to the parent station's transformer with the name "TPsFrame".
         """
-        sl_1_local_center = self.parent.super_layer(1).local_center[2]
-        sl_3_local_center = self.parent.super_layer(3).local_center[2]
-        vertical_center = (sl_1_local_center + sl_3_local_center) / 2
-
-        horizontal_center_phi = self.parent.super_layer(1).layer(1).cell(48).local_center[0]
-
-        sl2 =  self.parent.super_layer(2)
-        if sl2 is not None:
-            horizontal_center_theta = sl2.transformer.transform(sl2.layer(1).cell(48).local_center, from_frame="SuperLayer", to_frame="Station")[1]
-        else:
-            horizontal_center_theta = 0
+        sl1_center = np.array(self.parent.super_layer(1).local_center)
+        sl3_center = np.array(self.parent.super_layer(3).local_center)
+        sls_center = (sl1_center + sl3_center) / 2
 
         # Translation vector to move the center of TPs frame to the Station Frame
-        TStTpPhi = [horizontal_center_phi, horizontal_center_theta, vertical_center]
-        self.parent.transformer.add("TPsFramePhi", "Station", translation_vector=TStTpPhi)
+        self.parent.transformer.add("TPsFrame", "Station", translation_vector=sls_center)
 
-        if sl2 is not None:
-            # Translation vector to move the center of TPs frame to the Station Frame for theta segments
-            TSl2TpTheta = sl2.transformer.transform(TStTpPhi, from_frame="Station", to_frame="SuperLayer")
-            sl2.transformer.add("TPsFrameTheta", "SuperLayer", translation_vector=TSl2TpTheta)
-            _transformation = sl2.transformer.get_transformation("TPsFrameTheta", "Station")
-            self.parent.transformer.add("TPsFrameTheta", "Station", transformation_matrix=_transformation)
-            
-    def _create_segment(self, sl, position, slope):
+    def _create_segment(self, sl, position, angle):
         """ 
         Create a segment with the given parameters.
         :param sl: The super layer number.
         :type sl: int
         :param position: The horizontal coordinate of the segment in the AM Trigger Primitive refereence frame.
         :type position: float
-        :param slope: The slope of the segment in the local coordinates.
-        :type slope: float
+        :param angle: The angle of the segment in the local coordinates.
+        :type angle: float
         :return: A Segment object representing the segment.
         :rtype: Segment
         """
         _segment = Segment()
         _segment.sl = sl  # Super layer number
 
-        _dx = -1* np.sin(np.atan2(slope, 1))  # Calculate the x component of the direction vector
-        _dz = np.cos(np.atan2(slope, 1))  # Calculate the z component of the direction vector
+        _dx = -1* np.sin(np.radians(angle))  # Calculate the x component of the direction vector
+        _dz = np.cos(np.radians(angle))  # Calculate the z component of the direction vector
 
-        _segment.direction = np.array([_dx, 0, _dz]) # direction vector in local cords
-        # the for loop is used to convert the numpy array to a tuple of floats
-        if sl == 2:
-            sl2 = self.parent.super_layer(2)
-            if sl2 is not None:
-                transformer = partial(sl2.transformer.transform, from_frame="TPsFrameTheta", to_frame="Station")
-            else:
-                raise ValueError("Super Layer 2 does not exist in this station.")
-        else:
-            transformer = partial(self.parent.transformer.transform, from_frame="TPsFramePhi", to_frame="Station")
+        _direction = np.array([_dx, 0, _dz]) if sl!=2 else np.array([0, -_dx,_dz]) # direction vector in local cords
+        _center = (position, 0, 0) if sl!=2 else (0, -position, 0)
 
-        _segment.local_center = transformer((position, 0, 0))# local center in station coordinates
-        _segment.direction = transformer(_segment.direction, type="vector")  # direction in station coordinates
+        _segment.local_center = self.parent.transformer.transform(_center, from_frame="TPsFrame", to_frame="Station")# local center in station coordinates
+        _segment.direction = self.parent.transformer.transform(_direction, from_frame="TPsFrame", to_frame="Station", type="vector")  # direction in station coordinates
         _segment.direction = _segment.direction /np.sqrt(np.sum(_segment.direction**2))  # normalize the direction vector
         _segment.global_center = self.parent.transformer.transform(_segment.local_center, from_frame="Station", to_frame="CMS")  # global center in CMS coordinates
 
@@ -186,14 +156,14 @@ class AMDTSegments:
 
         for i, seg_info in enumerate(info):
             sl = seg_info.pop("sl", None)
-            slope = seg_info.pop("slope", None)
+            angle = seg_info.pop("angle", None)
             position = seg_info.pop("position", None)
 
-            if any(i is None for i in [sl, slope, position]):
+            if any(i is None for i in [sl, angle, position]):
                 raise ValueError(
-                    "Each segment information must contain 'sl', 'slope', and 'position' keys."
+                    "Each segment information must contain 'sl', 'angle', and 'position' keys."
                 )
-            _seg = self._create_segment(sl, position, slope)
+            _seg = self._create_segment(sl, position, angle)
             _seg.number = seg_info.pop("index", i + 1)
 
             for key, value in seg_info.items():
@@ -204,9 +174,9 @@ class AMDTSegments:
 if __name__ == "__main__":
     # Example usage
     segments_info = [
-        {"sl":1, "slope": -10.2, "position": 0},
-        {"sl":3, "slope": 20.0, "position": 0},
-        {"sl":2, "slope": 0.1, "position": 10},
+        {"sl":1, "angle": -10.2, "position": 0},
+        {"sl":3, "angle": 20.0, "position": 0},
+        {"sl":2, "angle": 0.1, "position": 10},
     ]
     segments = AMDTSegments(2, 1, 3, segments_info)
     for seg in segments:
