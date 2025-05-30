@@ -1,6 +1,7 @@
 from matplotlib.collections import LineCollection
 from mpldts.geometry import AMDTSegments
 from mpldts.patches.dt_patch_base import DTRelatedPatch
+import warnings
 
 class AMDTSegmentsPatch(DTRelatedPatch):
     """
@@ -60,8 +61,7 @@ class AMDTSegmentsPatch(DTRelatedPatch):
         :return: None. Adds a collection with the line segments of a DT to the provided matplotlib axes.
         """
         if faceview == "eta":
-            raise ValueError("AMDTSegmentsPatch only supports 'phi' view at the moment.")
-
+            warnings.warn("The 'eta' view is on development and may not work as expected.")
         self.vmap = vmap
         self.segments = segments
         
@@ -88,6 +88,10 @@ class AMDTSegmentsPatch(DTRelatedPatch):
         paths = []
         vars = []
         for seg in self.segments:
+            if self.view == "eta" and seg.sl != 2:
+                continue
+            if self.view == "phi" and seg.sl == 2:
+                continue
             path = self._create_segment(seg)
             var = getattr(seg, self.vmap, 0)
 
@@ -101,17 +105,19 @@ class AMDTSegmentsPatch(DTRelatedPatch):
         """
         Create a segment (line) for the given object.
         """
-        center = seg.local_center
-        direction = seg.direction
+        x, y, z = seg.local_center
+        dx, dy, dz = seg.direction
+        if seg.sl == 2:
+            _, _, length = self.segments.parent.bounds
+            x, y= -y , x # Invert x and y for eta view
+            dx, dy= -dy, dx # Invert direction for eta view
+
         size = 40
 
-        dx = direction[0]
-        dz = direction[2]
-
-        x_start = center[0] - dx * size * 0.5
-        z_start = center[2] - dz * size * 0.5
-        x_end = center[0] + dx * size * 0.5
-        z_end = center[2] + dz * size * 0.5
+        x_start = x - dx * size * 0.5
+        z_start = z - dz * size * 0.5
+        x_end = x + dx * size * 0.5
+        z_end = z + dz * size * 0.5
 
         return [[x_start, z_start], [x_end, z_end]]
 
