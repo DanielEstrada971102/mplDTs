@@ -65,14 +65,24 @@ class Segment:
         return self._x_local, self._y_local, self._z_local
 
     @property
-    def direction(self):
+    def local_direction(self):
         """
         Direction of the Object.
 
         :return: Direction of the object.
         :rtype: tuple
         """
-        return self._direction
+        return self._local_direction    
+    
+    @property
+    def global_direction(self):
+        """
+        Global direction of the Object.
+
+        :return: Global direction of the object.
+        :rtype: tuple
+        """
+        return self._global_direction
 
     @property
     def global_center(self):
@@ -114,12 +124,22 @@ class Segment:
         """
         self._x_global, self._y_global, self._z_global = cords
 
-    @direction.setter
-    def direction(self, direction: tuple):
+    @local_direction.setter
+    def local_direction(self, direction: tuple):
         """
         Set the direction of the Object.
 
         :param direction: Direction of the Object.
         :type direction: tuple
         """
-        self._direction = direction
+        self._local_direction = direction
+
+    @global_direction.setter
+    def global_direction(self, direction: tuple):
+        """
+        Set the global direction of the Object.
+
+        :param direction: Global direction of the Object.
+        :type direction: tuple
+        """
+        self._global_direction = direction

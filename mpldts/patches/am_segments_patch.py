@@ -106,7 +106,7 @@ class AMDTSegmentsPatch(DTRelatedPatch):
         Create a segment (line) for the given object.
         """
         x, y, z = seg.local_center
-        dx, dy, dz = seg.direction
+        dx, dy, dz = seg.local_direction
         if seg.sl == 2:
             _, _, length = self.segments.parent.bounds
             x, y= -y , x # Invert x and y for eta view

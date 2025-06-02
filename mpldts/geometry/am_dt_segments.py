@@ -140,18 +140,22 @@ class AMDTSegments:
         _dx = -1* np.sin(np.radians(angle))  # Calculate the x component of the direction vector
         _dz = np.cos(np.radians(angle))  # Calculate the z component of the direction vector
 
-        _direction = np.array([_dx, 0, _dz]) if sl!=2 else np.array([0, -_dx,_dz]) # direction vector in local cords
         _center = (position, 0, 0) if sl!=2 else (0, -position, 0)
-
         _segment.local_center = self.parent.transformer.transform(_center, from_frame="TPsFrame", to_frame="Station")# local center in station coordinates
-        _segment.direction = self.parent.transformer.transform(_direction, from_frame="TPsFrame", to_frame="Station", type="vector")  # direction in station coordinates
-        _segment.direction = _segment.direction /np.sqrt(np.sum(_segment.direction**2))  # normalize the direction vector
         _segment.global_center = self.parent.transformer.transform(_segment.local_center, from_frame="Station", to_frame="CMS")  # global center in CMS coordinates
 
+        _direction = np.array([_dx, 0, _dz]) if sl!=2 else np.array([0, -_dx,_dz]) # direction vector in local cords
+        _local_direction = self.parent.transformer.transform(_direction, from_frame="TPsFrame", to_frame="Station", type="vector")  # direction in station coordinates
+        _global_direction = self.parent.transformer.transform(_local_direction, from_frame="Station", to_frame="CMS", type="vector")  # direction in CMS coordinates
+        #normalize the direction vectors
+        _local_direction = _local_direction /np.sqrt(np.sum(_local_direction**2))
+        _global_direction = _global_direction / np.sqrt(np.sum(_global_direction**2))
+
         # this is just to ensure that they are tuples of floats and not numpy types... (not important XD)
-        _segment.direction = tuple(float(i) for i in _segment.direction)
         _segment.local_center = tuple(float(i) for i in _segment.local_center)
         _segment.global_center = tuple(float(i) for i in _segment.global_center)
+        _segment._local_direction = tuple(float(i) for i in _local_direction)
+        _segment._global_direction = tuple(float(i) for i in _global_direction)
 
         return _segment
 
