@@ -205,7 +205,7 @@ class TransformManager:
 
         if type == "point":
             if len(np.shape(P)) > 1:
-                _convert = pt.vectors_to_point
+                _convert = pt.vectors_to_points
             else:
                 _convert = pt.vector_to_point
         elif type == "vector":
