@@ -3,16 +3,16 @@ from mpldts.geometry import AMDTSegments
 from mpldts.patches.dt_patch_base import DTRelatedPatch
 import warnings
 
-class AMDTSegmentsPatch(DTRelatedPatch):
+class DTSegmentsPatch(DTRelatedPatch):
     """
-    A class to visualize a 2D representation of AM Segments of a DT chamber in matplotlib context.
+    A class to visualize a 2D representation of Segments of a DT chamber in matplotlib context.
 
     Attributes:
     -----------
         segments_collection : matplotlib.collections.LineCollection
             A collection of line segments representing the segments of the station.
         segments : AMDTSegments
-            The segments to be visualized. Can be any AMDTSegment or its child class, or a list of them.
+            The segments to be visualized.
         axes : matplotlib.axes.Axes
             The matplotlib axes to draw the patches on.
         view : str
@@ -42,10 +42,10 @@ class AMDTSegmentsPatch(DTRelatedPatch):
         **kwargs,
     ):
         """
-        Initialize a DTSegmentsPatch instance.
+        Initialize a SegmentsPatch instance.
 
         :param segments: The segments objects containing the geometry information.
-        :type segments: DTSegments
+        :type segments: AMDTSegments
         :param axes: The matplotlib axes to draw the patches on.
         :type axes: matplotlib.axes.Axes
         :param faceview: The view type, either "phi" or "eta".
@@ -58,19 +58,21 @@ class AMDTSegmentsPatch(DTRelatedPatch):
         :type vmap: str, optional
         :param segs_kwargs: Additional keyword arguments to apply to the LineCollection.
         :type segs_kwargs: dict, optional
-        :return: None. Adds a collection with the line segments of a DT to the provided matplotlib axes.
+        :return: None. Adds a collection with the line segments of a chamber to the provided matplotlib axes.
         """
         if faceview == "eta":
             warnings.warn("The 'eta' view is on development and may not work as expected.")
         self.vmap = vmap
         self.segments = segments
-        
+
         self.segments_collection = LineCollection(
             [], **(segs_kwargs or {"linewidth": 0.8, "color": "k"}), **kwargs
         )
 
+        self.parent = segments[0].parent # All segments should have the same parent
+
         super().__init__(
-            station=segments.parent,
+            station=self.parent,
             axes=axes,
             faceview=faceview,
             local=local,
@@ -108,9 +110,9 @@ class AMDTSegmentsPatch(DTRelatedPatch):
         x, y, z = seg.local_center
         dx, dy, dz = seg.local_direction
         if seg.sl == 2:
-            _, _, length = self.segments.parent.bounds
-            x, y= -y , x # Invert x and y for eta view
-            dx, dy= -dy, dx # Invert direction for eta view
+            _, _, length = self.parent.bounds
+            x, y = -y, x  # Invert x and y for eta view
+            dx, dy = -dy, dx  # Invert direction for eta view
 
         size = 40
 
@@ -131,3 +133,44 @@ class AMDTSegmentsPatch(DTRelatedPatch):
         self.vmap = vmap
         vars = [getattr(seg, self.vmap, 0) for seg in self.segments]
         self.segments_collection.set_array(vars)
+
+class MultiDTSegmentsPatch:
+    """
+    A class to visualize a 2D representation of Segments with multiple parent DT stations in matplotlib context.
+
+    Attributes:
+    -----------
+        patches : list
+            A list of SegmentsPatch instances, one for each parent station.
+        axes : matplotlib.axes.Axes
+            The matplotlib axes to draw the patches on.
+    """
+
+    def __init__(
+        self,
+        segments: AMDTSegments,
+        axes,
+        **kwargs,
+    ):
+        """
+        Initialize a MultiSegmentsPatch instance.
+
+        :param segments: The segments objects containing the geometry information.
+        :type segments: AMDTSegments
+        :param axes: The matplotlib axes to draw the patches on.
+        :type axes: matplotlib.axes.Axes
+        """
+        self.patches = {}
+
+        # Group segments by parent station
+        grouped_segments = segments.groupby(["wh", "sc", "st"])
+
+        for key, segs in grouped_segments.items():
+            if len(segs) == 0:
+                continue
+            patch = DTSegmentsPatch(
+                segments=segs,
+                axes=axes,
+                **kwargs,
+            )
+            self.patches[key] = patch
