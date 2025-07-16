@@ -1,4 +1,5 @@
 import warnings
+from typing import List, Union
 
 class Segment:
     """
@@ -159,7 +160,7 @@ class Segments:
             List of Segment objects in the collection.
     """
 
-    def __init__(self, segments: list[Segment] | Segment =None):
+    def __init__(self, segments: Union[List[Segment], Segment] = None):
         """
         Initialize the Segments collection.
         """
