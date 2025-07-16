@@ -293,5 +293,5 @@ if __name__ == "__main__":
             print(3 * "\t", l.cell(len(l.cells) - 1))
     print(
         "\t",
-        f"properties contained into cells: {st.super_layer(1).layer(1).cells[0].__dict__.keys()}",
+        f"properties contained into cells: {st.super_layer(1).layer(1).cell(10).__dict__.keys()}",
     )
