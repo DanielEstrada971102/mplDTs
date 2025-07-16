@@ -90,7 +90,6 @@
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.number"><code class="docutils literal notranslate"><span class="pre">SuperLayer.number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.layer"><code class="docutils literal notranslate"><span class="pre">SuperLayer.layer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer._build_super_layer"><code class="docutils literal notranslate"><span class="pre">SuperLayer._build_super_layer()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer._setup_tranformer"><code class="docutils literal notranslate"><span class="pre">SuperLayer._setup_tranformer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.direction"><code class="docutils literal notranslate"><span class="pre">SuperLayer.direction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.eta"><code class="docutils literal notranslate"><span class="pre">SuperLayer.eta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.global_cords_at_min"><code class="docutils literal notranslate"><span class="pre">SuperLayer.global_cords_at_min</span></code></a></li>
@@ -123,7 +122,6 @@
 <li class="toctree-l4"><a class="reference internal" href="layer.html#mpldts.geometry.layer.Layer.local_cords_at_min"><code class="docutils literal notranslate"><span class="pre">Layer.local_cords_at_min</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="layer.html#mpldts.geometry.layer.Layer.theta"><code class="docutils literal notranslate"><span class="pre">Layer.theta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="layer.html#mpldts.geometry.layer.Layer.width"><code class="docutils literal notranslate"><span class="pre">Layer.width</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="layer.html#mpldts.geometry.layer.Layer._setup_tranformer"><code class="docutils literal notranslate"><span class="pre">Layer._setup_tranformer()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -145,7 +143,6 @@
 <li class="toctree-l4"><a class="reference internal" href="drift_cell.html#mpldts.geometry.drift_cell.DriftCell.local_cords_at_min"><code class="docutils literal notranslate"><span class="pre">DriftCell.local_cords_at_min</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="drift_cell.html#mpldts.geometry.drift_cell.DriftCell.theta"><code class="docutils literal notranslate"><span class="pre">DriftCell.theta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="drift_cell.html#mpldts.geometry.drift_cell.DriftCell.width"><code class="docutils literal notranslate"><span class="pre">DriftCell.width</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="drift_cell.html#mpldts.geometry.drift_cell.DriftCell._setup_tranformer"><code class="docutils literal notranslate"><span class="pre">DriftCell._setup_tranformer()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -306,28 +303,28 @@ object. To mitigate this when several stations are created, parallelization of t
 </dd></dl>
 
 <p>The following example shows how to access the CMS DT geometry information.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dt_geometry</span> <span class="o">=</span> <span class="n">DTGeometry</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;./DTGeometry_v3.xml&quot;</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">dt_geometry</span> <span class="o">=</span> <span class="n">DTGeometry</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;./DTGeometry_v3.xml&quot;</span><span class="p">))</span>
 
-<span class="c1"># Retrieve and print global and local positions, and bounds for specific chambers</span>
-<span class="n">global_pos_1</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">local_pos_1</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">bounds</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Bounds&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bounds for Wh:-1, Sec:1, St:4: </span><span class="si">{</span><span class="n">bounds</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># Retrieve and print global and local positions, and bounds for specific chambers</span>
+    <span class="n">global_pos_1</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">local_pos_1</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">bounds</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Bounds&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bounds for Wh:-1, Sec:1, St:4: </span><span class="si">{</span><span class="n">bounds</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Global position for Wh:-2, Sec:1, St:1: </span><span class="si">{</span><span class="n">global_pos_1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Local position for Wh:1, Sec:1, St:4: </span><span class="si">{</span><span class="n">local_pos_1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Global position for Wh:-2, Sec:1, St:1: </span><span class="si">{</span><span class="n">global_pos_1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Local position for Wh:1, Sec:1, St:4: </span><span class="si">{</span><span class="n">local_pos_1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Iterate through all layers in a specific SuperLayer and print their attributes</span>
-<span class="c1"># 1. by using the root element</span>
-<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.//SuperLayer[@rawId=&#39;574922752&#39;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">attrib</span><span class="p">)</span>
-    <span class="k">break</span>
-<span class="c1"># 2. by using the get method</span>
-<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rawId</span><span class="o">=</span><span class="s2">&quot;574922752&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">attrib</span><span class="p">)</span>
-    <span class="k">break</span>
-<span class="c1"># Test retrieving attributes of a specific SuperLayer</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Super_Layer&quot;</span><span class="p">,</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rawId</span><span class="o">=</span><span class="mi">574922752</span><span class="p">)</span><span class="o">.</span><span class="n">attrib</span><span class="p">)</span>
+    <span class="c1"># Iterate through all layers in a specific SuperLayer and print their attributes</span>
+    <span class="c1"># 1. by using the root element</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.//SuperLayer[@rawId=&#39;574922752&#39;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">attrib</span><span class="p">)</span>
+        <span class="k">break</span>
+    <span class="c1"># 2. by using the get method</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rawId</span><span class="o">=</span><span class="s2">&quot;574922752&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">attrib</span><span class="p">)</span>
+        <span class="k">break</span>
+    <span class="c1"># Test retrieving attributes of a specific SuperLayer</span>
 </pre></div>
 </div>
 <p class="rubric">Output</p>
