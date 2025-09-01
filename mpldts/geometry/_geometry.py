@@ -109,7 +109,7 @@ class DTGeometry:
 
 
 # Initialize the DTGeometry object with the path to the XML file
-DTGEOMETRY = DTGeometry(os.path.join(os.path.dirname(__file__), "./DTGeometry_v3.xml"))
+DTGEOMETRY = DTGeometry(os.path.join(os.path.dirname(__file__), "DTGeometry_v3.xml"))
 
 # Example usage
 if __name__ == "__main__":
