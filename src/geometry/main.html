@@ -90,7 +90,6 @@
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.number"><code class="docutils literal notranslate"><span class="pre">SuperLayer.number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.layer"><code class="docutils literal notranslate"><span class="pre">SuperLayer.layer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer._build_super_layer"><code class="docutils literal notranslate"><span class="pre">SuperLayer._build_super_layer()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer._setup_tranformer"><code class="docutils literal notranslate"><span class="pre">SuperLayer._setup_tranformer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.direction"><code class="docutils literal notranslate"><span class="pre">SuperLayer.direction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.eta"><code class="docutils literal notranslate"><span class="pre">SuperLayer.eta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="super_layer.html#mpldts.geometry.super_layer.SuperLayer.global_cords_at_min"><code class="docutils literal notranslate"><span class="pre">SuperLayer.global_cords_at_min</span></code></a></li>
@@ -123,7 +122,6 @@
 <li class="toctree-l4"><a class="reference internal" href="layer.html#mpldts.geometry.layer.Layer.local_cords_at_min"><code class="docutils literal notranslate"><span class="pre">Layer.local_cords_at_min</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="layer.html#mpldts.geometry.layer.Layer.theta"><code class="docutils literal notranslate"><span class="pre">Layer.theta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="layer.html#mpldts.geometry.layer.Layer.width"><code class="docutils literal notranslate"><span class="pre">Layer.width</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="layer.html#mpldts.geometry.layer.Layer._setup_tranformer"><code class="docutils literal notranslate"><span class="pre">Layer._setup_tranformer()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -145,7 +143,6 @@
 <li class="toctree-l4"><a class="reference internal" href="drift_cell.html#mpldts.geometry.drift_cell.DriftCell.local_cords_at_min"><code class="docutils literal notranslate"><span class="pre">DriftCell.local_cords_at_min</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="drift_cell.html#mpldts.geometry.drift_cell.DriftCell.theta"><code class="docutils literal notranslate"><span class="pre">DriftCell.theta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="drift_cell.html#mpldts.geometry.drift_cell.DriftCell.width"><code class="docutils literal notranslate"><span class="pre">DriftCell.width</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="drift_cell.html#mpldts.geometry.drift_cell.DriftCell._setup_tranformer"><code class="docutils literal notranslate"><span class="pre">DriftCell._setup_tranformer()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -759,7 +756,7 @@ Cell center in CMS frame:  [ 263.53996    329.9044575 -287.25     ]  -&gt; check
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mpldts.geometry.transforms.TransformManager.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/transforms.html#TransformManager.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.transforms.TransformManager.transform" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'point'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mpldts/geometry/transforms.html#TransformManager.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpldts.geometry.transforms.TransformManager.transform" title="Link to this definition"></a></dt>
 <dd><p>Transform a point from the from_frame to the to_frame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

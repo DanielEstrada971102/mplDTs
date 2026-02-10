@@ -86,7 +86,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/super_layer.html#mpldts.geometry.super_layer.SuperLayer.number"><code class="docutils literal notranslate"><span class="pre">SuperLayer.number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/super_layer.html#mpldts.geometry.super_layer.SuperLayer.layer"><code class="docutils literal notranslate"><span class="pre">SuperLayer.layer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/super_layer.html#mpldts.geometry.super_layer.SuperLayer._build_super_layer"><code class="docutils literal notranslate"><span class="pre">SuperLayer._build_super_layer()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/super_layer.html#mpldts.geometry.super_layer.SuperLayer._setup_tranformer"><code class="docutils literal notranslate"><span class="pre">SuperLayer._setup_tranformer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/super_layer.html#mpldts.geometry.super_layer.SuperLayer.direction"><code class="docutils literal notranslate"><span class="pre">SuperLayer.direction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/super_layer.html#mpldts.geometry.super_layer.SuperLayer.eta"><code class="docutils literal notranslate"><span class="pre">SuperLayer.eta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/super_layer.html#mpldts.geometry.super_layer.SuperLayer.global_cords_at_min"><code class="docutils literal notranslate"><span class="pre">SuperLayer.global_cords_at_min</span></code></a></li>
@@ -119,7 +118,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/layer.html#mpldts.geometry.layer.Layer.local_cords_at_min"><code class="docutils literal notranslate"><span class="pre">Layer.local_cords_at_min</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/layer.html#mpldts.geometry.layer.Layer.theta"><code class="docutils literal notranslate"><span class="pre">Layer.theta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/layer.html#mpldts.geometry.layer.Layer.width"><code class="docutils literal notranslate"><span class="pre">Layer.width</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/layer.html#mpldts.geometry.layer.Layer._setup_tranformer"><code class="docutils literal notranslate"><span class="pre">Layer._setup_tranformer()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -141,7 +139,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/drift_cell.html#mpldts.geometry.drift_cell.DriftCell.local_cords_at_min"><code class="docutils literal notranslate"><span class="pre">DriftCell.local_cords_at_min</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/drift_cell.html#mpldts.geometry.drift_cell.DriftCell.theta"><code class="docutils literal notranslate"><span class="pre">DriftCell.theta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/drift_cell.html#mpldts.geometry.drift_cell.DriftCell.width"><code class="docutils literal notranslate"><span class="pre">DriftCell.width</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../src/geometry/drift_cell.html#mpldts.geometry.drift_cell.DriftCell._setup_tranformer"><code class="docutils literal notranslate"><span class="pre">DriftCell._setup_tranformer()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -265,7 +262,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">local_center</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LocalPosition&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">global_center</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Bounds&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_tranformer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_transformer</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_layers</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_build_super_layer</span><span class="p">()</span></div>
 
@@ -326,9 +323,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rawId&quot;</span><span class="p">),</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="SuperLayer._setup_tranformer">
-<a class="viewcode-back" href="../../../src/geometry/super_layer.html#mpldts.geometry.super_layer.SuperLayer._setup_tranformer">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_tranformer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_transformer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set up the transformer for the super layer. It defines the transformation from the local frame to the global frame.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -355,7 +350,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
             <span class="s2">&quot;SuperLayer&quot;</span><span class="p">,</span> <span class="s2">&quot;Station&quot;</span><span class="p">,</span> <span class="n">rotation_matrix</span><span class="o">=</span><span class="n">_RStSl</span><span class="p">,</span> <span class="n">translation_vector</span><span class="o">=</span><span class="n">_TStSl</span>
         <span class="p">)</span></div>
-</div>
 
 
 
