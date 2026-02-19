@@ -6,7 +6,6 @@ from pandas import DataFrame
 from copy import deepcopy
 import warnings
 import threading
-import weakref
 from typing import Optional, Any
 
 class Station(DTFrame):
@@ -357,13 +356,24 @@ if __name__ == "__main__":
 
 
 class StationsCache:
-    def __init__(self):
-        self._cache = weakref.WeakValueDictionary()
-        self._lock = threading.Lock()
+    """Singleton cache for Station objects to avoid recreating expensive geometry."""
+    
+    _instance = None
+    _lock = threading.Lock()
+    
+    def __new__(cls):
+        if cls._instance is None:
+            with cls._lock:
+                # Double-check locking pattern
+                if cls._instance is None:
+                    cls._instance = super().__new__(cls)
+                    cls._instance._cache = {}
+                    cls._instance._cache_lock = threading.Lock()
+        return cls._instance
 
     def get(self, wh: int, sc: int, st: int, dt_info: Optional[Any] = None) -> Optional[Station]:
         key = (wh, sc, st)
-        with self._lock:
+        with self._cache_lock:
             station = self._cache.get(key)
             if station is None:
                 try:
@@ -376,3 +386,15 @@ class StationsCache:
                 if dt_info is not None and station is not None:
                     station.set_cell_attrs(dt_info)
             return station
+    
+    def clear(self):
+        """Clear the cache (useful for testing or memory management)."""
+        with self._cache_lock:
+            self._cache.clear()
+    
+    def size(self):
+        """Return the number of cached stations."""
+        with self._cache_lock:
+            return len(self._cache)
+
+STATION_CACHE = StationsCache()
